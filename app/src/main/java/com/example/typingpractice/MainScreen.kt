@@ -1,6 +1,8 @@
 package com.example.typingpractice
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -11,21 +13,26 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Alignment.Companion.End
+import androidx.compose.ui.Alignment.Companion.Top
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.typingpractice.ui.MainScreenViewModel
@@ -36,17 +43,26 @@ fun MainScreen(
     viewModel: MainScreenViewModel = hiltViewModel(),
 ) {
     val number = viewModel.score.value
+    val charachterCount = viewModel.charachterCount
     val isGameStarted = viewModel.isGameStarted.value
     var text = ""
     val kc = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
+    var sentence = "sdkfghjk jdkldfj sjksdkfj djk"
 
     Box(
         modifier = Modifier
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(modifier = Modifier.align(Alignment.Center)) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(12.dp),
+            horizontalAlignment = CenterHorizontally
+        ) {
+            Text(text = sentence)
+            Spacer(modifier = Modifier.height(12.dp))
             if (!isGameStarted) {
                 Button(
                     onClick = {
@@ -56,7 +72,6 @@ fun MainScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp)
                 ) {
                     Text(
                         text = "Start the game",
@@ -73,7 +88,6 @@ fun MainScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp)
                 ) {
                     Text(
                         text = "Finish the game",
@@ -90,8 +104,11 @@ fun MainScreen(
                 onValueChange = {
                     text = it
                     Log.d("Mesaj: ", text)
-                    if(text == "A" || text == "a") viewModel.increaseScore(5)
-                                },
+                    if (text == sentence[charachterCount].toString()) {
+                        viewModel.increaseScore(5)
+                        viewModel.increaseCharachterCount()
+                    }
+                },
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
                 ),
@@ -100,20 +117,31 @@ fun MainScreen(
                 )
             )
         }
-        Column(modifier = Modifier.fillMaxSize()) {
-            if (isGameStarted) {
-                Text("Oyun başladı...")
-            } else {
-                Text("Oyun bitti")
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.1f)
+                .padding(12.dp)
+                .align(TopCenter),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Row(modifier = Modifier.fillMaxSize()) {
+                Box(modifier = Modifier.fillMaxWidth(0.5f)) {
+                    if (isGameStarted) {
+                        Text("Oyun başladı...")
+                    } else {
+                        Text("Oyun bitti")
+                    }
+                }
+                ScoreBoard(number)
             }
-            ScoreBoard(number, modifier = Modifier.align(End))
         }
     }
 }
 
 @Composable
-fun ScoreBoard(number: Int, modifier: Modifier) {
-    Box(modifier = modifier) {
-        Text("Score: $number")
+fun ScoreBoard(number: Int) {
+    Box(modifier = Modifier.fillMaxWidth(1f)) {
+        Text("Score: $number", modifier = Modifier.align(CenterEnd))
     }
 }

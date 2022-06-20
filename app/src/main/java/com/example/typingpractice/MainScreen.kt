@@ -46,9 +46,9 @@ fun MainScreen(
     val charachterCount = viewModel.charachterCount
     val isGameStarted = viewModel.isGameStarted.value
     var text = ""
+    val sentence = viewModel.sentence.value
     val kc = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
-    var sentence = "sdkfghjk jdkldfj sjksdkfj djk"
 
     Box(
         modifier = Modifier
@@ -103,7 +103,6 @@ fun MainScreen(
                 value = text,
                 onValueChange = {
                     text = it
-                    Log.d("Mesaj: ", text)
                     if (text == sentence[charachterCount].toString()) {
                         viewModel.increaseScore(5)
                         viewModel.increaseCharachterCount()

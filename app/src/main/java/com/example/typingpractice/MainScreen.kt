@@ -105,7 +105,12 @@ fun MainScreen(
                     text = it
                     if (text == sentence[charachterCount].toString()) {
                         viewModel.increaseScore(5)
-                        if(charachterCount < sentence.length-1) viewModel.increaseCharachterCount()
+                        if(charachterCount < sentence.length-1) {
+                            viewModel.increaseCharachterCount()
+                        } else {
+                            viewModel.changeSentence()
+                            viewModel.resetCharachterCount()
+                        }
                     }
                 },
                 keyboardOptions = KeyboardOptions(

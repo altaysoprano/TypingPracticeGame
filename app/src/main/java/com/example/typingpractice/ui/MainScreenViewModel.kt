@@ -29,22 +29,32 @@ class MainScreenViewModel: ViewModel() {
 
     fun startGame() {
         _isGameStarted.value = true
+        changeSentence()
+    }
+
+    fun changeSentence() {
         _sentence.value = randomSentence()
     }
 
     fun finishGame() {
         _score.value = 0
-        charachterCount = 0
+        resetCharachterCount()
         _isGameStarted.value = false
     }
 
-    fun randomString(len: Int): String {
+    fun resetCharachterCount() {
+        charachterCount = 0
+    }
+
+    private fun randomString(): String {
         val random = SecureRandom()
-        val chars = "abcdefghijklmnopqrstuvwxyz".toCharArray()
+        val len = (3..6).random()
+        val chars = ("abcdefghijklmnopqrstuvwxyzaeiouabcdefghijklmnopqrstuvwxyzaeiou" +
+                "abcdefghijklmnopqrstuvwxyzaeiouABCDEFGHIJKLMNOPQRSTUVWXYZAEIOU").toCharArray()
         return (1..len).map { chars[random.nextInt(chars.size)] }.joinToString("")
     }
 
     fun randomSentence(): String {
-        return "${randomString(4)} ${randomString(4)} ${randomString(4)} ${randomString(4)}"
+        return "${randomString()} ${randomString()} ${randomString()} ${randomString()}"
     }
 }

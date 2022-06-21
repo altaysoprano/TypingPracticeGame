@@ -2,15 +2,14 @@ package com.example.typingpractice
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterEnd
@@ -29,7 +28,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -63,12 +64,6 @@ fun MainScreen(
                 .padding(12.dp),
             horizontalAlignment = CenterHorizontally
         ) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                for(i in sentence) {
-                    Text(text = i.toString())
-                }
-            }
-            Spacer(modifier = Modifier.height(12.dp))
             if (!isGameStarted) {
                 Button(
                     onClick = {
@@ -86,6 +81,30 @@ fun MainScreen(
                     )
                 }
             } else {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.onSecondary)
+                        .padding(12.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    for (i in sentence.indices) {
+                        if (i == charachterCount) {
+                            Text(
+                                color = Color.White,
+                                text = sentence[i].toString(),
+                                style = MaterialTheme.typography.h2
+                            )
+                        } else {
+                            Text(
+                                color = Color.White,
+                                text = sentence[i].toString(),
+                                style = MaterialTheme.typography.h1
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(12.dp))
                 Button(
                     onClick = {
                         focusRequester.requestFocus()
@@ -101,6 +120,16 @@ fun MainScreen(
                         fontWeight = FontWeight.Bold
                     )
                 }
+                IconButton(onClick = {
+                    focusRequester.requestFocus()
+                    kc?.show()
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_keyboard),
+                        contentDescription = "keyboard",
+                        modifier = Modifier.size(48.dp)
+                    )
+                }
             }
             OutlinedTextField(
                 modifier = Modifier
@@ -111,7 +140,7 @@ fun MainScreen(
                     text = it
                     if (text == sentence[charachterCount].toString()) {
                         viewModel.increaseScore(5)
-                        if(charachterCount < sentence.length-1) {
+                        if (charachterCount < sentence.length - 1) {
                             viewModel.increaseCharachterCount()
                         } else {
                             viewModel.changeSentence()

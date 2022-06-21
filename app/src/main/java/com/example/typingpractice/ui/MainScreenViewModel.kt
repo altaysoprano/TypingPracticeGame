@@ -2,6 +2,7 @@ package com.example.typingpractice.ui
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import java.security.SecureRandom
@@ -13,6 +14,9 @@ class MainScreenViewModel: ViewModel() {
 
     private val _sentence: MutableState<String> = mutableStateOf("")
     val sentence = _sentence
+
+    private val _letterGroup = mutableStateListOf<Letter>()
+    val letterGroup: MutableList<Letter> = _letterGroup
 
     var charachterCount = 0
 
@@ -34,6 +38,7 @@ class MainScreenViewModel: ViewModel() {
 
     fun changeSentence() {
         _sentence.value = randomSentence()
+        changeSentenceToLetterGroup()
     }
 
     fun finishGame() {
@@ -44,6 +49,13 @@ class MainScreenViewModel: ViewModel() {
 
     fun resetCharachterCount() {
         charachterCount = 0
+    }
+
+    fun changeSentenceToLetterGroup() {
+        _letterGroup.clear()
+        for(i in sentence.value.indices) {
+            _letterGroup.add(Letter(text = sentence.value[i].toString(), isTrue = false))
+        }
     }
 
     private fun randomString(): String {

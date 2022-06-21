@@ -50,6 +50,7 @@ fun MainScreen(
     val isGameStarted = viewModel.isGameStarted.value
     var text = ""
     val sentence = viewModel.sentence.value
+    val letterGroup = viewModel.letterGroup
     val kc = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
 
@@ -97,7 +98,7 @@ fun MainScreen(
                             )
                         } else {
                             Text(
-                                color = Color.White,
+                                color = if(letterGroup[i].isTrue) Color.Green else Color.White,
                                 text = sentence[i].toString(),
                                 style = MaterialTheme.typography.h1
                             )
@@ -140,6 +141,7 @@ fun MainScreen(
                     text = it
                     if (text == sentence[charachterCount].toString()) {
                         viewModel.increaseScore(5)
+                        letterGroup[charachterCount].isTrue = true
                         if (charachterCount < sentence.length - 1) {
                             viewModel.increaseCharachterCount()
                         } else {

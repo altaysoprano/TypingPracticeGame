@@ -29,10 +29,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.typingpractice.ui.MainScreenViewModel
@@ -61,7 +63,11 @@ fun MainScreen(
                 .padding(12.dp),
             horizontalAlignment = CenterHorizontally
         ) {
-            Text(text = sentence)
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                for(i in sentence) {
+                    Text(text = i.toString())
+                }
+            }
             Spacer(modifier = Modifier.height(12.dp))
             if (!isGameStarted) {
                 Button(

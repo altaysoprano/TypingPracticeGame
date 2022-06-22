@@ -98,7 +98,12 @@ fun MainScreen(
                             )
                         } else {
                             Text(
-                                color = if(letterGroup[i].isTrue) Color.Green else Color.White,
+                                color = when {
+                                    letterGroup[i].isTrue == Check.FALSE -> Color.Red
+                                    letterGroup[i].isTrue == Check.TRUE -> Color.Green
+                                    else -> Color.White
+                                },
+                                //color = if(letterGroup[i].isTrue==Check.TRUE) Color.Green else Color.White,
                                 text = sentence[i].toString(),
                                 style = MaterialTheme.typography.h1
                             )
@@ -116,7 +121,7 @@ fun MainScreen(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "Finish the game",
+                        text = "Finish",
                         modifier = Modifier.padding(vertical = 8.dp),
                         fontWeight = FontWeight.Bold
                     )
@@ -141,13 +146,18 @@ fun MainScreen(
                     text = it
                     if (text == sentence[charachterCount].toString()) {
                         viewModel.increaseScore(5)
-                        letterGroup[charachterCount].isTrue = true
+                        if (letterGroup[charachterCount].isTrue != Check.FALSE) {
+                            letterGroup[charachterCount].isTrue = Check.TRUE
+                        }
                         if (charachterCount < sentence.length - 1) {
                             viewModel.increaseCharachterCount()
                         } else {
                             viewModel.changeSentence()
                             viewModel.resetCharachterCount()
                         }
+                    } else {
+                        viewModel.decreaseScore(3)
+                        letterGroup[charachterCount].isTrue = Check.FALSE
                     }
                 },
                 keyboardOptions = KeyboardOptions(

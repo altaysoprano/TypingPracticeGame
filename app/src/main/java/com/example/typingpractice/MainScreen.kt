@@ -148,6 +148,8 @@ fun MainScreen(
                         viewModel.increaseScore(5)
                         if (letterGroup[charachterCount].isTrue != Check.FALSE) {
                             letterGroup[charachterCount].isTrue = Check.TRUE
+                        } else {
+                            viewModel.decreaseScore(5)
                         }
                         if (charachterCount < sentence.length - 1) {
                             viewModel.increaseCharachterCount()

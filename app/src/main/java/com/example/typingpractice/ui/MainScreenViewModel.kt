@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.typingpractice.Check
 import java.security.SecureRandom
 
 class MainScreenViewModel: ViewModel() {
@@ -25,6 +26,10 @@ class MainScreenViewModel: ViewModel() {
 
     fun increaseScore(number: Int) {
         _score.value += number
+    }
+
+    fun decreaseScore(number: Int) {
+        if(_score.value >= number) _score.value -= number else _score.value = 0
     }
 
     fun increaseCharachterCount() {
@@ -54,7 +59,7 @@ class MainScreenViewModel: ViewModel() {
     fun changeSentenceToLetterGroup() {
         _letterGroup.clear()
         for(i in sentence.value.indices) {
-            _letterGroup.add(Letter(text = sentence.value[i].toString(), isTrue = false))
+            _letterGroup.add(Letter(text = sentence.value[i].toString(), isTrue = Check.NOTTRUEORFALSE))
         }
     }
 

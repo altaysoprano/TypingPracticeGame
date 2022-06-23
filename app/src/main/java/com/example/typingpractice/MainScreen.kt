@@ -24,7 +24,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -37,6 +39,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.typingpractice.ui.MainScreenViewModel
 
@@ -51,11 +54,13 @@ fun MainScreen(
     var text = ""
     val sentence = viewModel.sentence.value
     val letterGroup = viewModel.letterGroup
+    // val mistakeCount2 = viewModel.mistakeCount.value
+    val mistakeCount = letterGroup.count { it.isTrue == Check.FALSE }
     val kc = LocalSoftwareKeyboardController.current
     val focusRequester = viewModel.focusRequester
 
     LaunchedEffect(true) {
-        if(isGameStarted) {
+        if (isGameStarted) {
             focusRequester.requestFocus()
             kc?.show()
         }
@@ -110,7 +115,6 @@ fun MainScreen(
                                     letterGroup[i].isTrue == Check.TRUE -> Color.Green
                                     else -> Color.White
                                 },
-                                //color = if(letterGroup[i].isTrue==Check.TRUE) Color.Green else Color.White,
                                 text = sentence[i].toString(),
                                 style = MaterialTheme.typography.h1
                             )
@@ -167,6 +171,11 @@ fun MainScreen(
                     } else {
                         viewModel.decreaseScore(3)
                         letterGroup[charachterCount].isTrue = Check.FALSE
+                        if(letterGroup.count { it.isTrue == Check.FALSE }>3) {
+                            focusRequester.requestFocus()
+                            kc?.hide()
+                            viewModel.finishGame()
+                        }
                     }
                 },
                 keyboardOptions = KeyboardOptions(
@@ -180,17 +189,57 @@ fun MainScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.15f)
+                .fillMaxHeight(0.25f)
                 .padding(12.dp)
                 .align(TopCenter),
             verticalArrangement = Arrangement.Center
         ) {
             Row(modifier = Modifier.fillMaxSize()) {
-                Box(modifier = Modifier.fillMaxWidth(0.5f)) {
-                    if (isGameStarted) {
-                        Text("Oyun başladı...")
-                    } else {
-                        Text("Oyun bitti")
+                Box(modifier = Modifier.fillMaxWidth(0.3f)) {
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            text = "Hata hakkın",
+                        )
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                modifier = Modifier.padding(end = 8.dp),
+                                color = if(mistakeCount>0) Color.Red else Color.White,
+                                text = "X",
+                                fontSize = 32.sp,
+                                style = TextStyle(
+                                    shadow = Shadow(
+                                        color = Color.Black,
+                                        offset = Offset(2F, 2F),
+                                        blurRadius = 2F
+                                    )
+                                )
+                            )
+                            Text(
+                                modifier = Modifier.padding(end = 8.dp),
+                                color = if(mistakeCount>1) Color.Red else Color.White,
+                                text = "X",
+                                fontSize = 32.sp,
+                                style = TextStyle(
+                                    shadow = Shadow(
+                                        color = Color.Black,
+                                        offset = Offset(2F, 2F),
+                                        blurRadius = 2F
+                                    )
+                                )
+                            )
+                            Text(
+                                color = if(mistakeCount>2) Color.Red else Color.White,
+                                text = "X",
+                                fontSize = 32.sp,
+                                style = TextStyle(
+                                    shadow = Shadow(
+                                        color = Color.Black,
+                                        offset = Offset(2F, 2F),
+                                        blurRadius = 2F
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
                 ScoreBoard(number)

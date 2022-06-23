@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import com.example.typingpractice.Check
 import java.security.SecureRandom
 
-class MainScreenViewModel: ViewModel() {
+class MainScreenViewModel : ViewModel() {
 
     private val _score: MutableState<Int> = mutableStateOf(0)
     val score = _score
@@ -23,6 +23,11 @@ class MainScreenViewModel: ViewModel() {
 
     var charachterCount = 0
 
+/*
+    private val _mistakeCount: MutableState<Int> = mutableStateOf(_letterGroup.count { it.isTrue == Check.FALSE })
+    val mistakeCount = _mistakeCount
+*/
+
     private val _isGameStarted: MutableState<Boolean> = mutableStateOf(false)
     val isGameStarted = _isGameStarted
 
@@ -33,7 +38,7 @@ class MainScreenViewModel: ViewModel() {
     }
 
     fun decreaseScore(number: Int) {
-        if(_score.value >= number) _score.value -= number else _score.value = 0
+        if (_score.value >= number) _score.value -= number else _score.value = 0
     }
 
     fun increaseCharachterCount() {
@@ -60,10 +65,15 @@ class MainScreenViewModel: ViewModel() {
         charachterCount = 0
     }
 
-    fun changeSentenceToLetterGroup() {
+    private fun changeSentenceToLetterGroup() {
         _letterGroup.clear()
-        for(i in sentence.value.indices) {
-            _letterGroup.add(Letter(text = sentence.value[i].toString(), isTrue = Check.NOTTRUEORFALSE))
+        for (i in sentence.value.indices) {
+            _letterGroup.add(
+                Letter(
+                    text = sentence.value[i].toString(),
+                    isTrue = Check.NOTTRUEORFALSE
+                )
+            )
         }
     }
 

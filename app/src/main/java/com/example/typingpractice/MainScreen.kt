@@ -52,7 +52,14 @@ fun MainScreen(
     val sentence = viewModel.sentence.value
     val letterGroup = viewModel.letterGroup
     val kc = LocalSoftwareKeyboardController.current
-    val focusRequester = remember { FocusRequester() }
+    val focusRequester = viewModel.focusRequester
+
+    LaunchedEffect(true) {
+        if(isGameStarted) {
+            focusRequester.requestFocus()
+            kc?.show()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -76,7 +83,7 @@ fun MainScreen(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "Start the game",
+                        text = "Start",
                         modifier = Modifier.padding(vertical = 8.dp),
                         fontWeight = FontWeight.Bold
                     )
@@ -173,7 +180,7 @@ fun MainScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.1f)
+                .fillMaxHeight(0.15f)
                 .padding(12.dp)
                 .align(TopCenter),
             verticalArrangement = Arrangement.Center

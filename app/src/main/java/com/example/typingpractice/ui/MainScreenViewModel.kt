@@ -23,11 +23,6 @@ class MainScreenViewModel : ViewModel() {
 
     var charachterCount = 0
 
-/*
-    private val _mistakeCount: MutableState<Int> = mutableStateOf(_letterGroup.count { it.isTrue == Check.FALSE })
-    val mistakeCount = _mistakeCount
-*/
-
     private val _isGameStarted: MutableState<Boolean> = mutableStateOf(false)
     val isGameStarted = _isGameStarted
 

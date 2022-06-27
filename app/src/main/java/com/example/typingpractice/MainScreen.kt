@@ -12,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterStart
@@ -54,7 +55,6 @@ fun MainScreen(
     var text = ""
     val sentence = viewModel.sentence.value
     val letterGroup = viewModel.letterGroup
-    // val mistakeCount2 = viewModel.mistakeCount.value
     val mistakeCount = letterGroup.count { it.isTrue == Check.FALSE }
     val kc = LocalSoftwareKeyboardController.current
     val focusRequester = viewModel.focusRequester
@@ -171,7 +171,7 @@ fun MainScreen(
                     } else {
                         viewModel.decreaseScore(3)
                         letterGroup[charachterCount].isTrue = Check.FALSE
-                        if(letterGroup.count { it.isTrue == Check.FALSE }>3) {
+                        if (letterGroup.count { it.isTrue == Check.FALSE } > 3) {
                             focusRequester.requestFocus()
                             kc?.hide()
                             viewModel.finishGame()
@@ -192,18 +192,23 @@ fun MainScreen(
                 .fillMaxHeight(0.25f)
                 .padding(12.dp)
                 .align(TopCenter),
+            horizontalAlignment = CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Row(modifier = Modifier.fillMaxSize()) {
-                Box(modifier = Modifier.fillMaxWidth(0.3f)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.4f)
+                ) {
                     Column(modifier = Modifier.fillMaxSize()) {
                         Text(
-                            text = "Hata hakkın",
+                            modifier = Modifier.align(CenterHorizontally),
+                            text = "Mistake Counter"
                         )
-                        Row(modifier = Modifier.fillMaxWidth()) {
+                        Row(modifier = Modifier.fillMaxWidth(), Arrangement.Center) {
                             Text(
                                 modifier = Modifier.padding(end = 8.dp),
-                                color = if(mistakeCount>0) Color.Red else Color.White,
+                                color = if (mistakeCount > 0) Color.Red else Color.White,
                                 text = "X",
                                 fontSize = 32.sp,
                                 style = TextStyle(
@@ -216,7 +221,7 @@ fun MainScreen(
                             )
                             Text(
                                 modifier = Modifier.padding(end = 8.dp),
-                                color = if(mistakeCount>1) Color.Red else Color.White,
+                                color = if (mistakeCount > 1) Color.Red else Color.White,
                                 text = "X",
                                 fontSize = 32.sp,
                                 style = TextStyle(
@@ -228,7 +233,7 @@ fun MainScreen(
                                 )
                             )
                             Text(
-                                color = if(mistakeCount>2) Color.Red else Color.White,
+                                color = if (mistakeCount > 2) Color.Red else Color.White,
                                 text = "X",
                                 fontSize = 32.sp,
                                 style = TextStyle(
@@ -242,6 +247,7 @@ fun MainScreen(
                         }
                     }
                 }
+                TimeCounter()
                 ScoreBoard(number)
             }
         }
@@ -249,8 +255,21 @@ fun MainScreen(
 }
 
 @Composable
+fun TimeCounter() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.4f)
+    ) {
+
+    }
+}
+
+@Composable
 fun ScoreBoard(number: Int) {
-    Box(modifier = Modifier.fillMaxWidth(1f)) {
-        Text("Score: $number", modifier = Modifier.align(CenterEnd))
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(1f)
+    ) {
+        Text("Score: $number", modifier = Modifier.align(Center))
     }
 }

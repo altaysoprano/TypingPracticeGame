@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -43,7 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.typingpractice.ui.MainScreenViewModel
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 @ExperimentalComposeUiApi
 @Composable
 fun MainScreen(
@@ -53,6 +56,7 @@ fun MainScreen(
     val charachterCount = viewModel.charachterCount
     val isGameStarted = viewModel.isGameStarted.value
     var text = ""
+    val timeText = viewModel.timeText.value
     val sentence = viewModel.sentence.value
     val letterGroup = viewModel.letterGroup
     val mistakeCount = letterGroup.count { it.isTrue == Check.FALSE }
@@ -247,7 +251,7 @@ fun MainScreen(
                         }
                     }
                 }
-                TimeCounter()
+                TimeCounter(timeText)
                 ScoreBoard(number)
             }
         }
@@ -255,12 +259,15 @@ fun MainScreen(
 }
 
 @Composable
-fun TimeCounter() {
+fun TimeCounter(timeText: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth(0.4f)
     ) {
-
+        Column(modifier = Modifier.align(Center)) {
+            Text("Time: ")
+            Text(timeText, fontWeight = FontWeight.Bold)
+        }
     }
 }
 
@@ -270,6 +277,9 @@ fun ScoreBoard(number: Int) {
         modifier = Modifier
             .fillMaxWidth(1f)
     ) {
-        Text("Score: $number", modifier = Modifier.align(Center))
+        Column(modifier = Modifier.align(Center)) {
+            Text("Score: ")
+            Text("$number", fontWeight = FontWeight.Bold)
+        }
     }
 }

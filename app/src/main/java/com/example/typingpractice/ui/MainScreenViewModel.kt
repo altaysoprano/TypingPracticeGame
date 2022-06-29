@@ -7,8 +7,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.focus.FocusRequester
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.typingpractice.Check
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.security.SecureRandom
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
 
 class MainScreenViewModel : ViewModel() {
 
@@ -23,10 +31,17 @@ class MainScreenViewModel : ViewModel() {
 
     var charachterCount = 0
 
+    private var time = 0
+
+    private val _timeText: MutableState<String> = mutableStateOf("00:00")
+    val timeText = _timeText
+
     private val _isGameStarted: MutableState<Boolean> = mutableStateOf(false)
     val isGameStarted = _isGameStarted
 
     val focusRequester = FocusRequester()
+
+    private var timerJob: Job? = null
 
     fun increaseScore(number: Int) {
         _score.value += number
@@ -40,9 +55,35 @@ class MainScreenViewModel : ViewModel() {
         charachterCount += 1
     }
 
+    private fun increaseTime(number: Int) {
+        time += number
+    }
+
+    @ExperimentalTime
     fun startGame() {
         _isGameStarted.value = true
         changeSentence()
+        timerJob = viewModelScope.launch { startTimer() }
+    }
+
+    @ExperimentalTime
+    suspend fun startTimer() {
+        while(true) {
+            delay(1.seconds)
+            increaseTime(1)
+            _timeText.value = stringForTime(time)
+        }
+    }
+
+    private fun stringForTime(totalSeconds: Int): String {
+        val seconds = totalSeconds % 60
+        val minutes = totalSeconds / 60 % 60
+        val hours = totalSeconds / 3600
+        return if (hours > 0) {
+            "%d:%02d:%02d".format(hours, minutes, seconds)
+        } else {
+            "%02d:%02d".format(minutes, seconds)
+        }
     }
 
     fun changeSentence() {
@@ -54,6 +95,7 @@ class MainScreenViewModel : ViewModel() {
         _score.value = 0
         resetCharachterCount()
         _isGameStarted.value = false
+        timerJob?.cancel()
     }
 
     fun resetCharachterCount() {

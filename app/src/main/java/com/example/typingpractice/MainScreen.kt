@@ -200,14 +200,15 @@ fun MainScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Row(modifier = Modifier.fillMaxSize()) {
+                TimeCounter(timeText)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.4f)
                 ) {
                     Column(modifier = Modifier.fillMaxSize()) {
                         Text(
-                            modifier = Modifier.align(CenterHorizontally),
-                            text = "Mistake Counter"
+                            text = "Mistake Counter",
+                            textAlign = TextAlign.Center
                         )
                         Row(modifier = Modifier.fillMaxWidth(), Arrangement.Center) {
                             Text(
@@ -251,7 +252,6 @@ fun MainScreen(
                         }
                     }
                 }
-                TimeCounter(timeText)
                 ScoreBoard(number)
             }
         }
@@ -264,7 +264,7 @@ fun TimeCounter(timeText: String) {
         modifier = Modifier
             .fillMaxWidth(0.4f)
     ) {
-        Column(modifier = Modifier.align(Center)) {
+        Column(modifier = Modifier.align(CenterStart).padding(start = 12.dp)) {
             Text("Time: ")
             Text(timeText, fontWeight = FontWeight.Bold)
         }
@@ -277,7 +277,7 @@ fun ScoreBoard(number: Int) {
         modifier = Modifier
             .fillMaxWidth(1f)
     ) {
-        Column(modifier = Modifier.align(Center)) {
+        Column(modifier = Modifier.align(CenterEnd).padding(end = 12.dp)) {
             Text("Score: ")
             Text("$number", fontWeight = FontWeight.Bold)
         }

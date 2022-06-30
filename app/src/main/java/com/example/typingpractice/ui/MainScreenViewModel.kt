@@ -59,6 +59,11 @@ class MainScreenViewModel : ViewModel() {
         time += number
     }
 
+    private fun resetTime() {
+        time = 0
+        _timeText.value = "00:00"
+    }
+
     @ExperimentalTime
     fun startGame() {
         _isGameStarted.value = true
@@ -93,6 +98,7 @@ class MainScreenViewModel : ViewModel() {
 
     fun finishGame() {
         _score.value = 0
+        resetTime()
         resetCharachterCount()
         _isGameStarted.value = false
         timerJob?.cancel()

@@ -39,6 +39,9 @@ class MainScreenViewModel : ViewModel() {
     private val _isGameStarted: MutableState<Boolean> = mutableStateOf(false)
     val isGameStarted = _isGameStarted
 
+    private val _isPaused: MutableState<Boolean> = mutableStateOf(false)
+    val isPaused = _isPaused
+
     val focusRequester = FocusRequester()
 
     private var timerJob: Job? = null
@@ -94,6 +97,7 @@ class MainScreenViewModel : ViewModel() {
     fun changeSentence() {
         _sentence.value = randomSentence()
         changeSentenceToLetterGroup()
+        resetTime()
     }
 
     fun finishGame() {

@@ -92,7 +92,8 @@ fun MainScreen(
                         .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0XFF0FC00F),
-                        contentColor = Color.White)
+                        contentColor = Color.White
+                    )
                 ) {
                     Text(
                         text = "Start",
@@ -131,12 +132,29 @@ fun MainScreen(
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(
                     onClick = {
+
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Pause",
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Button(
+                    onClick = {
                         focusRequester.requestFocus()
                         kc?.hide()
                         viewModel.finishGame()
                     },
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0XFFD61809),
+                        contentColor = Color.White
+                    )
                 ) {
                     Text(
                         text = "Finish",
@@ -268,7 +286,9 @@ fun TimeCounter(timeText: String) {
         modifier = Modifier
             .fillMaxWidth(0.4f)
     ) {
-        Column(modifier = Modifier.align(CenterStart).padding(start = 12.dp)) {
+        Column(modifier = Modifier
+            .align(CenterStart)
+            .padding(start = 12.dp)) {
             Text("Time: ")
             Text(timeText, fontWeight = FontWeight.Bold)
         }
@@ -281,7 +301,9 @@ fun ScoreBoard(number: Int) {
         modifier = Modifier
             .fillMaxWidth(1f)
     ) {
-        Column(modifier = Modifier.align(CenterEnd).padding(end = 12.dp)) {
+        Column(modifier = Modifier
+            .align(CenterEnd)
+            .padding(end = 12.dp)) {
             Text("Score: ")
             Text("$number", fontWeight = FontWeight.Bold)
         }

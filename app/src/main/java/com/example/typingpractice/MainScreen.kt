@@ -77,7 +77,7 @@ fun MainScreen(
     ) {
         Column(
             modifier = Modifier
-                .align(Alignment.Center)
+                .align(Center)
                 .padding(12.dp),
             horizontalAlignment = CenterHorizontally
         ) {
@@ -89,7 +89,10 @@ fun MainScreen(
                         viewModel.startGame()
                     },
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0XFF0FC00F),
+                        contentColor = Color.White)
                 ) {
                     Text(
                         text = "Start",
@@ -207,8 +210,8 @@ fun MainScreen(
                 ) {
                     Column(modifier = Modifier.fillMaxSize()) {
                         Text(
-                            text = "Mistake Counter",
-                            textAlign = TextAlign.Center
+                            modifier = Modifier.align(CenterHorizontally),
+                            text = "Mistakes"
                         )
                         Row(modifier = Modifier.fillMaxWidth(), Arrangement.Center) {
                             Text(

@@ -14,5 +14,6 @@ val white800 = Color(0xFF3C3C3C)
 val white850 = Color(0xFF2F2F2F)
 val white900 = Color(0xFF1C1C1C)
 
+val buttonColor = Color(0XFF0FC00F)
 
 val white = Color(0xFFFFFFFF)

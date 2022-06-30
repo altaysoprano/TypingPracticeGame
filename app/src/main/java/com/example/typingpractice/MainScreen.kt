@@ -158,6 +158,7 @@ fun MainScreen(
             OutlinedTextField(
                 modifier = Modifier
                     .alpha(0f)
+                    .fillMaxSize(0f)
                     .focusRequester(focusRequester),
                 value = text,
                 onValueChange = {

@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import java.security.SecureRandom
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
@@ -77,24 +78,28 @@ class MainScreenViewModel : ViewModel() {
     @ExperimentalTime
     suspend fun startTimer() {
         while(true) {
-            delay(1.seconds)
-            increaseTime(1)
+            delay(100.milliseconds)
+            increaseTime(100)
+            Log.d("Mesaj: ", "Time: $time")
             _timeText.value = stringForTime(time)
         }
     }
 
     fun onPaused() {
         _isPaused.value = true
+        Log.d("Mesaj: ", "isPaused: $isPaused")
         timerJob?.cancel()
     }
 
     @ExperimentalTime
     fun onResume() {
         _isPaused.value = false
+        timerJob?.cancel()
         timerJob = viewModelScope.launch { startTimer() }
     }
 
-    private fun stringForTime(totalSeconds: Int): String {
+    private fun stringForTime(timeMs: Int): String {
+        val totalSeconds = timeMs / 1000
         val seconds = totalSeconds % 60
         val minutes = totalSeconds / 60 % 60
         val hours = totalSeconds / 3600
@@ -116,6 +121,7 @@ class MainScreenViewModel : ViewModel() {
         resetTime()
         resetCharachterCount()
         _isGameStarted.value = false
+        _isPaused.value = false
         timerJob?.cancel()
     }
 

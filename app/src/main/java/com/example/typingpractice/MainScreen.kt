@@ -1,10 +1,6 @@
 package com.example.typingpractice
 
-import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,30 +12,19 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterStart
-import androidx.compose.ui.Alignment.Companion.End
-import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.input.key.*
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,6 +40,7 @@ fun MainScreen(
     val number = viewModel.score.value
     val charachterCount = viewModel.charachterCount
     val isGameStarted = viewModel.isGameStarted.value
+    val isPaused = viewModel.isPaused.value
     var text = ""
     val timeText = viewModel.timeText.value
     val sentence = viewModel.sentence.value
@@ -86,7 +72,7 @@ fun MainScreen(
                     onClick = {
                         focusRequester.requestFocus()
                         kc?.show()
-                        viewModel.startGame()
+                        viewModel.onStart()
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -130,24 +116,44 @@ fun MainScreen(
                     }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
-                Button(
-                    onClick = {
-
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Pause",
-                        modifier = Modifier.padding(vertical = 8.dp),
-                        fontWeight = FontWeight.Bold
-                    )
+                if(!isPaused) {
+                    Button(
+                        onClick = {
+                            focusRequester.requestFocus()
+                            kc?.hide()
+                            viewModel.onPaused()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Pause",
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+                else {
+                    Button(
+                        onClick = {
+                            focusRequester.requestFocus()
+                            kc?.show()
+                            viewModel.onResume()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Resume",
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(
                     onClick = {
                         focusRequester.requestFocus()
                         kc?.hide()
-                        viewModel.finishGame()
+                        viewModel.onFinish()
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -162,15 +168,17 @@ fun MainScreen(
                         fontWeight = FontWeight.Bold
                     )
                 }
-                IconButton(onClick = {
-                    focusRequester.requestFocus()
-                    kc?.show()
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_keyboard),
-                        contentDescription = "keyboard",
-                        modifier = Modifier.size(48.dp)
-                    )
+                if (!isPaused) {
+                    IconButton(onClick = {
+                        focusRequester.requestFocus()
+                        kc?.show()
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_keyboard),
+                            contentDescription = "keyboard",
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
                 }
             }
             OutlinedTextField(
@@ -200,7 +208,7 @@ fun MainScreen(
                         if (letterGroup.count { it.isTrue == Check.FALSE } > 3) {
                             focusRequester.requestFocus()
                             kc?.hide()
-                            viewModel.finishGame()
+                            viewModel.onFinish()
                         }
                     }
                 },
@@ -286,9 +294,11 @@ fun TimeCounter(timeText: String) {
         modifier = Modifier
             .fillMaxWidth(0.4f)
     ) {
-        Column(modifier = Modifier
-            .align(CenterStart)
-            .padding(start = 12.dp)) {
+        Column(
+            modifier = Modifier
+                .align(CenterStart)
+                .padding(start = 12.dp)
+        ) {
             Text("Time: ")
             Text(timeText, fontWeight = FontWeight.Bold)
         }
@@ -301,9 +311,11 @@ fun ScoreBoard(number: Int) {
         modifier = Modifier
             .fillMaxWidth(1f)
     ) {
-        Column(modifier = Modifier
-            .align(CenterEnd)
-            .padding(end = 12.dp)) {
+        Column(
+            modifier = Modifier
+                .align(CenterEnd)
+                .padding(end = 12.dp)
+        ) {
             Text("Score: ")
             Text("$number", fontWeight = FontWeight.Bold)
         }

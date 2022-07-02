@@ -68,7 +68,7 @@ class MainScreenViewModel : ViewModel() {
     }
 
     @ExperimentalTime
-    fun startGame() {
+    fun onStart() {
         _isGameStarted.value = true
         changeSentence()
         timerJob = viewModelScope.launch { startTimer() }
@@ -81,6 +81,17 @@ class MainScreenViewModel : ViewModel() {
             increaseTime(1)
             _timeText.value = stringForTime(time)
         }
+    }
+
+    fun onPaused() {
+        _isPaused.value = true
+        timerJob?.cancel()
+    }
+
+    @ExperimentalTime
+    fun onResume() {
+        _isPaused.value = false
+        timerJob = viewModelScope.launch { startTimer() }
     }
 
     private fun stringForTime(totalSeconds: Int): String {
@@ -100,7 +111,7 @@ class MainScreenViewModel : ViewModel() {
         resetTime()
     }
 
-    fun finishGame() {
+    fun onFinish() {
         _score.value = 0
         resetTime()
         resetCharachterCount()

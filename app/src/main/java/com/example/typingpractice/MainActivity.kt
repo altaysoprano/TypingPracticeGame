@@ -10,8 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.typingpractice.ui.theme.TypingPracticeTheme
+import kotlin.time.ExperimentalTime
 
 class MainActivity : ComponentActivity() {
+    @ExperimentalTime
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

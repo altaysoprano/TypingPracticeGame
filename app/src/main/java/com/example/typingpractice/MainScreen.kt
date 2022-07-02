@@ -38,6 +38,7 @@ fun MainScreen(
     viewModel: MainScreenViewModel = hiltViewModel(),
 ) {
     val number = viewModel.score.value
+    val extraPoints = viewModel.extraPoints
     val charachterCount = viewModel.charachterCount
     val isGameStarted = viewModel.isGameStarted.value
     val isPaused = viewModel.isPaused.value
@@ -116,7 +117,7 @@ fun MainScreen(
                     }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
-                if(!isPaused) {
+                if (!isPaused) {
                     Button(
                         onClick = {
                             focusRequester.requestFocus()
@@ -131,8 +132,7 @@ fun MainScreen(
                             fontWeight = FontWeight.Bold
                         )
                     }
-                }
-                else {
+                } else {
                     Button(
                         onClick = {
                             focusRequester.requestFocus()
@@ -282,7 +282,7 @@ fun MainScreen(
                         }
                     }
                 }
-                ScoreBoard(number)
+                ScoreBoard(number, extraPoints)
             }
         }
     }
@@ -306,7 +306,7 @@ fun TimeCounter(timeText: String) {
 }
 
 @Composable
-fun ScoreBoard(number: Int) {
+fun ScoreBoard(number: Int, extraPoints: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth(1f)
@@ -318,6 +318,8 @@ fun ScoreBoard(number: Int) {
         ) {
             Text("Score: ")
             Text("$number", fontWeight = FontWeight.Bold)
+            Text(text = "Gain: ", fontSize = 12.sp)
+            Text(text = "+$extraPoints", fontSize = 12.sp, fontWeight = FontWeight.Bold)
         }
     }
 }

@@ -24,6 +24,8 @@ class MainScreenViewModel : ViewModel() {
     private val _score: MutableState<Int> = mutableStateOf(0)
     val score = _score
 
+    var extraPoints = 0
+
     private val _sentence: MutableState<String> = mutableStateOf("")
     val sentence = _sentence
 
@@ -87,7 +89,6 @@ class MainScreenViewModel : ViewModel() {
 
     fun onPaused() {
         _isPaused.value = true
-        Log.d("Mesaj: ", "isPaused: $isPaused")
         timerJob?.cancel()
     }
 
@@ -112,12 +113,28 @@ class MainScreenViewModel : ViewModel() {
 
     fun changeSentence() {
         _sentence.value = randomSentence()
+        when {
+            _score.value == 0 -> { extraPoints = 0
+                Log.d("Mesaj: ", "Score 0 oldu ")}
+            time<5000 -> { extraPoints = 10 }
+            time in 5001..5999 -> {extraPoints = 9}
+            time in 6000..6999 -> { extraPoints = 8}
+            time in 7000..7999 -> { extraPoints = 7}
+            time in 8000..8999 -> { extraPoints = 6}
+            time in 9000..9999 -> { extraPoints = 5}
+            time in 10000..13999 -> {extraPoints = 4}
+            time in 14000..19999 -> { extraPoints = 3}
+            time in 20000..33999 -> {extraPoints = 2}
+            else -> {extraPoints = 0}
+        }
+        increaseScore(extraPoints)
         changeSentenceToLetterGroup()
         resetTime()
     }
 
     fun onFinish() {
         _score.value = 0
+        extraPoints = 0
         resetTime()
         resetCharachterCount()
         _isGameStarted.value = false

@@ -45,6 +45,9 @@ class MainScreenViewModel : ViewModel() {
     private val _isPaused: MutableState<Boolean> = mutableStateOf(false)
     val isPaused = _isPaused
 
+    private val _dialogState: MutableState<Boolean> = mutableStateOf(false)
+    val dialogState = _dialogState
+
     val focusRequester = FocusRequester()
 
     private var timerJob: Job? = null
@@ -55,6 +58,14 @@ class MainScreenViewModel : ViewModel() {
 
     fun decreaseScore(number: Int) {
         if (_score.value >= number) _score.value -= number else _score.value = 0
+    }
+
+    fun onDialogDismiss() {
+        _dialogState.value = false
+        _score.value = 0
+        extraPoints = 0
+        resetTime()
+        _letterGroup.clear()
     }
 
     fun increaseCharachterCount() {
@@ -82,7 +93,7 @@ class MainScreenViewModel : ViewModel() {
         while(true) {
             delay(100.milliseconds)
             increaseTime(100)
-            Log.d("Mesaj: ", "Time: $time")
+            // Log.d("Mesaj: ", "Time: $time")
             _timeText.value = stringForTime(time)
         }
     }
@@ -133,9 +144,7 @@ class MainScreenViewModel : ViewModel() {
     }
 
     fun onFinish() {
-        _score.value = 0
-        extraPoints = 0
-        resetTime()
+        _dialogState.value = true
         resetCharachterCount()
         _isGameStarted.value = false
         _isPaused.value = false

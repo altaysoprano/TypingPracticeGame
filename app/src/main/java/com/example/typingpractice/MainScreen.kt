@@ -1,5 +1,6 @@
 package com.example.typingpractice
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.typingpractice.ui.MainScreenViewModel
+import com.example.typingpractice.ui.ScoreAlertDialog
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -42,6 +44,7 @@ fun MainScreen(
     val charachterCount = viewModel.charachterCount
     val isGameStarted = viewModel.isGameStarted.value
     val isPaused = viewModel.isPaused.value
+    val dialogState = viewModel.dialogState.value
     var text = ""
     val timeText = viewModel.timeText.value
     val sentence = viewModel.sentence.value
@@ -60,7 +63,7 @@ fun MainScreen(
     Box(
         modifier = Modifier
             .fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Center
     ) {
         Column(
             modifier = Modifier
@@ -282,7 +285,10 @@ fun MainScreen(
                         }
                     }
                 }
+                Log.d("Mesaj: ", "Number 1: " + number.toString())
                 ScoreBoard(number, extraPoints)
+                Log.d("Mesaj: ", "Number 2: " + number.toString())
+                ScoreAlertDialog(score = number, dialogState = dialogState) { viewModel.onDialogDismiss() }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.example.typingpractice
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.typingpractice.ui.BestScoresCard
 import com.example.typingpractice.ui.MainScreenViewModel
 import com.example.typingpractice.ui.ScoreAlertDialog
 import kotlin.time.ExperimentalTime
@@ -192,6 +194,7 @@ fun MainScreen(
                 value = text,
                 onValueChange = {
                     text = it
+                    Log.d("Mesaj: ", "Text: $text, it: $it")
                     if (text == sentence[charachterCount].toString()) {
                         viewModel.increaseScore(5)
                         if (letterGroup[charachterCount].isTrue != Check.FALSE) {
@@ -226,70 +229,82 @@ fun MainScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.25f)
+                .fillMaxHeight(0.35f)
                 .padding(12.dp)
                 .align(TopCenter),
             horizontalAlignment = CenterHorizontally,
-            verticalArrangement = Arrangement.Center
         ) {
-            Row(modifier = Modifier.fillMaxSize()) {
-                TimeCounter(timeText)
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.4f)
-                ) {
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        Text(
-                            modifier = Modifier.align(CenterHorizontally),
-                            text = "Mistakes"
-                        )
-                        Row(modifier = Modifier.fillMaxWidth(), Arrangement.Center) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.30f)
+            ) {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    TimeCounter(timeText)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.4f)
+                    ) {
+                        Column() {
                             Text(
-                                modifier = Modifier.padding(end = 8.dp),
-                                color = if (mistakeCount > 0) Color.Red else Color.White,
-                                text = "X",
-                                fontSize = 32.sp,
-                                style = TextStyle(
-                                    shadow = Shadow(
-                                        color = Color.Black,
-                                        offset = Offset(2F, 2F),
-                                        blurRadius = 2F
+                                modifier = Modifier.align(CenterHorizontally),
+                                text = "Mistakes"
+                            )
+                            Row(modifier = Modifier.fillMaxWidth(), Arrangement.Center) {
+                                Text(
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    color = if (mistakeCount > 0) Color.Red else Color.White,
+                                    text = "X",
+                                    fontSize = 28.sp,
+                                    style = TextStyle(
+                                        shadow = Shadow(
+                                            color = Color.Black,
+                                            offset = Offset(2F, 2F),
+                                            blurRadius = 2F
+                                        )
                                     )
                                 )
-                            )
-                            Text(
-                                modifier = Modifier.padding(end = 8.dp),
-                                color = if (mistakeCount > 1) Color.Red else Color.White,
-                                text = "X",
-                                fontSize = 32.sp,
-                                style = TextStyle(
-                                    shadow = Shadow(
-                                        color = Color.Black,
-                                        offset = Offset(2F, 2F),
-                                        blurRadius = 2F
+                                Text(
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    color = if (mistakeCount > 1) Color.Red else Color.White,
+                                    text = "X",
+                                    fontSize = 28.sp,
+                                    style = TextStyle(
+                                        shadow = Shadow(
+                                            color = Color.Black,
+                                            offset = Offset(2F, 2F),
+                                            blurRadius = 2F
+                                        )
                                     )
                                 )
-                            )
-                            Text(
-                                color = if (mistakeCount > 2) Color.Red else Color.White,
-                                text = "X",
-                                fontSize = 32.sp,
-                                style = TextStyle(
-                                    shadow = Shadow(
-                                        color = Color.Black,
-                                        offset = Offset(2F, 2F),
-                                        blurRadius = 2F
+                                Text(
+                                    color = if (mistakeCount > 2) Color.Red else Color.White,
+                                    text = "X",
+                                    fontSize = 28.sp,
+                                    style = TextStyle(
+                                        shadow = Shadow(
+                                            color = Color.Black,
+                                            offset = Offset(2F, 2F),
+                                            blurRadius = 2F
+                                        )
                                     )
                                 )
-                            )
+                            }
                         }
                     }
+                    ScoreBoard(number, extraPoints)
+                    ScoreAlertDialog(
+                        score = number,
+                        dialogState = dialogState
+                    ) { viewModel.onDialogDismiss() }
                 }
-                Log.d("Mesaj: ", "Number 1: " + number.toString())
-                ScoreBoard(number, extraPoints)
-                Log.d("Mesaj: ", "Number 2: " + number.toString())
-                ScoreAlertDialog(score = number, dialogState = dialogState) { viewModel.onDialogDismiss() }
             }
+            BestScoresCard(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 12.dp),
+                backgroundColor = MaterialTheme.colors.onBackground
+            )
         }
     }
 }

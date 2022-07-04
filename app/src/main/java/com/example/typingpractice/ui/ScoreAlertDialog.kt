@@ -26,12 +26,9 @@ fun ScoreAlertDialog(
     onDismiss: () -> Unit
 ) {
 
-    Log.d("Mesaj: ", "Score (AlertDialog): " + score.toString())
     if (dialogState) {
         AlertDialog(
-            onDismissRequest = {
-                onDismiss()
-            },
+            onDismissRequest = {},
             title = {
                 Row(
                     modifier = Modifier.fillMaxWidth(),

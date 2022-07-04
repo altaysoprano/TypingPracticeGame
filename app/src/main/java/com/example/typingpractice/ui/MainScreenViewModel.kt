@@ -125,8 +125,7 @@ class MainScreenViewModel : ViewModel() {
     fun changeSentence() {
         _sentence.value = randomSentence()
         when {
-            _score.value == 0 -> { extraPoints = 0
-                Log.d("Mesaj: ", "Score 0 oldu ")}
+            _score.value == 0 -> { extraPoints = 0}
             time<5000 -> { extraPoints = 10 }
             time in 5001..5999 -> {extraPoints = 9}
             time in 6000..6999 -> { extraPoints = 8}

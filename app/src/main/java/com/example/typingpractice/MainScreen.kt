@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -30,9 +31,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.typingpractice.ui.BestScoresCard
-import com.example.typingpractice.ui.MainScreenViewModel
-import com.example.typingpractice.ui.ScoreAlertDialog
+import com.example.typingpractice.ui.*
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -85,6 +84,9 @@ fun MainScreen(
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0XFF0FC00F),
                         contentColor = Color.White
+                    ),
+                    elevation = ButtonDefaults.elevation(
+                        defaultElevation = 18.dp
                     )
                 ) {
                     Text(
@@ -129,7 +131,10 @@ fun MainScreen(
                             kc?.hide()
                             viewModel.onPaused()
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        elevation = ButtonDefaults.elevation(
+                            defaultElevation = 18.dp
+                        )
                     ) {
                         Text(
                             text = "Pause",
@@ -165,6 +170,9 @@ fun MainScreen(
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0XFFD61809),
                         contentColor = Color.White
+                    ),
+                    elevation = ButtonDefaults.elevation(
+                        defaultElevation = 18.dp
                     )
                 ) {
                     Text(
@@ -240,7 +248,9 @@ fun MainScreen(
                     .fillMaxHeight(0.30f)
             ) {
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    TimeCounter(timeText)
+                    TimeCounter(timeText, backgroundColor = MaterialTheme.colors.onBackground)
+                    Mistakes(mistakeCount = mistakeCount, backgroundColor = MaterialTheme.colors.onBackground)
+/*
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(0.4f)
@@ -292,7 +302,8 @@ fun MainScreen(
                             }
                         }
                     }
-                    ScoreBoard(number, extraPoints)
+*/
+                    ScoreBoard(number, extraPoints, backgroundColor = MaterialTheme.colors.onBackground)
                     ScoreAlertDialog(
                         score = number,
                         dialogState = dialogState
@@ -309,6 +320,7 @@ fun MainScreen(
     }
 }
 
+/*
 @Composable
 fun TimeCounter(timeText: String) {
     Box(
@@ -325,22 +337,30 @@ fun TimeCounter(timeText: String) {
         }
     }
 }
+*/
 
+/*
 @Composable
 fun ScoreBoard(number: Int, extraPoints: Int) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth(1f)
-    ) {
-        Column(
-            modifier = Modifier
-                .align(CenterEnd)
-                .padding(end = 12.dp)
+    Card(
+        shape = RoundedCornerShape(5.dp),
+        elevation = 10.dp
         ) {
-            Text("Score: ")
-            Text("$number", fontWeight = FontWeight.Bold)
-            Text(text = "Gain: ", fontSize = 12.sp)
-            Text(text = "+$extraPoints", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(1f)
+        ) {
+            Column(
+                modifier = Modifier
+                    .align(CenterEnd)
+                    .padding(end = 12.dp)
+            ) {
+                Text("Score: ")
+                Text("$number", fontWeight = FontWeight.Bold)
+                Text(text = "Gain: ", fontSize = 12.sp)
+                Text(text = "+$extraPoints", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            }
         }
+
     }
-}
+}*/

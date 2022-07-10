@@ -9,33 +9,35 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ScoreBoard(number: Int, extraPoints: Int, backgroundColor: Color) {
+fun ScoreBoard(number: Int, extraPoints: Int, backgroundColor: Color, modifier: Modifier) {
     Card(
         shape = RoundedCornerShape(5.dp),
         elevation = 10.dp,
         backgroundColor = backgroundColor,
-        modifier = Modifier.padding(start = 12.dp)
+        modifier = modifier
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth(1f)
         ) {
             Column(
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 12.dp)
+                    .align(Alignment.Center)
             ) {
-                Text("Score: ")
-                Text("$number", fontWeight = FontWeight.Bold)
-                Text(text = "Gain: ", fontSize = 12.sp)
-                Text(text = "+$extraPoints", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text("Score ")
+                Text("$number", fontWeight = FontWeight.Bold, modifier = Modifier.align(CenterHorizontally))
+                Text(text = "Gain ", fontSize = 12.sp, modifier = Modifier.align(CenterHorizontally))
+                Text(text = "+$extraPoints", fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold, modifier = Modifier.align(CenterHorizontally),
+                    color = Color(0XFF0FC00F))
             }
         }
 

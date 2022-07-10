@@ -1,40 +1,44 @@
 package com.example.typingpractice.ui
 
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.focus.FocusRequester
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.typingpractice.Check
+import com.example.typingpractice.data.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.security.SecureRandom
-import java.text.SimpleDateFormat
-import java.util.*
+import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
-class MainScreenViewModel : ViewModel() {
+@HiltViewModel
+class MainScreenViewModel @Inject constructor(
+    private val getScores: GetScores,
+    private val insertScore: InsertScore,
+    private val deleteAllScores: DeleteAllScores
+) : ViewModel() {
+
+    var extraPoints = 0
+    var charachterCount = 0
+    private var time = 0
+    val focusRequester = FocusRequester()
+    private var timerJob: Job? = null
 
     private val _score: MutableState<Int> = mutableStateOf(0)
     val score = _score
 
-    var extraPoints = 0
-
     private val _sentence: MutableState<String> = mutableStateOf("")
     val sentence = _sentence
 
+    private var _bestScores: MutableState<BestScoresState> = mutableStateOf(BestScoresState())
+    var bestScores = _bestScores
+
     private val _letterGroup = mutableStateListOf<Letter>()
     val letterGroup: MutableList<Letter> = _letterGroup
-
-    var charachterCount = 0
-
-    private var time = 0
 
     private val _timeText: MutableState<String> = mutableStateOf("00:00")
     val timeText = _timeText
@@ -48,9 +52,9 @@ class MainScreenViewModel : ViewModel() {
     private val _dialogState: MutableState<Boolean> = mutableStateOf(false)
     val dialogState = _dialogState
 
-    val focusRequester = FocusRequester()
-
-    private var timerJob: Job? = null
+    init {
+        getAllScores()
+    }
 
     fun increaseScore(number: Int) {
         _score.value += number
@@ -64,6 +68,7 @@ class MainScreenViewModel : ViewModel() {
         _dialogState.value = false
         _score.value = 0
         extraPoints = 0
+        getAllScores()
         resetTime()
         _letterGroup.clear()
     }
@@ -90,7 +95,7 @@ class MainScreenViewModel : ViewModel() {
 
     @ExperimentalTime
     suspend fun startTimer() {
-        while(true) {
+        while (true) {
             delay(100.milliseconds)
             increaseTime(100)
             // Log.d("Mesaj: ", "Time: $time")
@@ -101,6 +106,20 @@ class MainScreenViewModel : ViewModel() {
     fun onPaused() {
         _isPaused.value = true
         timerJob?.cancel()
+    }
+
+    private fun getAllScores() {
+        viewModelScope.launch {
+            _bestScores.value = _bestScores.value.copy(
+                bestScores = getScores()
+            )
+        }
+    }
+
+    private fun addScores(score: Int) {
+        viewModelScope.launch {
+            insertScore(Score(0, score))
+        }
     }
 
     @ExperimentalTime
@@ -125,17 +144,39 @@ class MainScreenViewModel : ViewModel() {
     fun changeSentence() {
         _sentence.value = randomSentence()
         when {
-            _score.value == 0 -> { extraPoints = 0}
-            time<5000 -> { extraPoints = 10 }
-            time in 5001..5999 -> {extraPoints = 9}
-            time in 6000..6999 -> { extraPoints = 8}
-            time in 7000..7999 -> { extraPoints = 7}
-            time in 8000..8999 -> { extraPoints = 6}
-            time in 9000..9999 -> { extraPoints = 5}
-            time in 10000..13999 -> {extraPoints = 4}
-            time in 14000..19999 -> { extraPoints = 3}
-            time in 20000..33999 -> {extraPoints = 2}
-            else -> {extraPoints = 0}
+            _score.value == 0 -> {
+                extraPoints = 0
+            }
+            time < 5000 -> {
+                extraPoints = 10
+            }
+            time in 5001..5999 -> {
+                extraPoints = 9
+            }
+            time in 6000..6999 -> {
+                extraPoints = 8
+            }
+            time in 7000..7999 -> {
+                extraPoints = 7
+            }
+            time in 8000..8999 -> {
+                extraPoints = 6
+            }
+            time in 9000..9999 -> {
+                extraPoints = 5
+            }
+            time in 10000..13999 -> {
+                extraPoints = 4
+            }
+            time in 14000..19999 -> {
+                extraPoints = 3
+            }
+            time in 20000..33999 -> {
+                extraPoints = 2
+            }
+            else -> {
+                extraPoints = 0
+            }
         }
         increaseScore(extraPoints)
         changeSentenceToLetterGroup()
@@ -145,6 +186,7 @@ class MainScreenViewModel : ViewModel() {
     fun onFinish() {
         _dialogState.value = true
         resetCharachterCount()
+        addScores(_score.value)
         _isGameStarted.value = false
         _isPaused.value = false
         timerJob?.cancel()

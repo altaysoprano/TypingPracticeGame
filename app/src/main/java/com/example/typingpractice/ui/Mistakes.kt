@@ -15,23 +15,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Mistakes(mistakeCount: Int, backgroundColor: Color) {
+fun Mistakes(mistakeCount: Int, backgroundColor: Color, modifier: Modifier) {
     Card(
         shape = RoundedCornerShape(5.dp),
         elevation = 10.dp,
-        backgroundColor = backgroundColor
+        backgroundColor = backgroundColor,
+        modifier = modifier
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth(0.4f)
                 .fillMaxHeight()
         ) {
-            Column() {
+            Column(modifier = Modifier.align(Alignment.Center)) {
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     text = "Mistakes"
                 )
-                Row(modifier = Modifier.fillMaxWidth(), Arrangement.Center) {
+                Row(horizontalArrangement = Arrangement.Center) {
                     Text(
                         modifier = Modifier.padding(end = 8.dp),
                         color = if (mistakeCount > 0) Color.Red else Color.White,

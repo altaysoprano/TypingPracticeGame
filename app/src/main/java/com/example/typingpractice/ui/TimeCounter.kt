@@ -13,15 +13,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TimeCounter(timeText: String, backgroundColor: Color) {
+fun TimeCounter(timeText: String, backgroundColor: Color, modifier: Modifier) {
     Card(
         shape = RoundedCornerShape(5.dp),
         elevation = 10.dp,
-        backgroundColor = backgroundColor
+        backgroundColor = backgroundColor,
+        modifier = modifier
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth(0.4f)
                 .fillMaxHeight(),
             contentAlignment = Alignment.CenterStart
         ) {

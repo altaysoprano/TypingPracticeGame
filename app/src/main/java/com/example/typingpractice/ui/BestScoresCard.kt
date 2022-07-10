@@ -15,9 +15,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.typingpractice.data.Score
 
 @Composable
-fun BestScoresCard(modifier: Modifier, backgroundColor: Color) {
+fun BestScoresCard(modifier: Modifier, backgroundColor: Color, bestScores: List<Score>) {
 
     Card(
         modifier = modifier,
@@ -48,7 +49,7 @@ fun BestScoresCard(modifier: Modifier, backgroundColor: Color) {
                         contentDescription = "Silver Medal",
                         modifier = Modifier.size(48.dp)
                     )
-                    Text("312")
+                    Text(bestScores[1].score.toString())
                 }
                 Spacer(modifier = Modifier.width(32.dp))
                 Column(
@@ -62,7 +63,7 @@ fun BestScoresCard(modifier: Modifier, backgroundColor: Color) {
                         contentDescription = "Gold Medal",
                         modifier = Modifier.size(48.dp)
                     )
-                    Text("456")
+                    Text(bestScores[0].score.toString())
                 }
                 Spacer(modifier = Modifier.width(32.dp))
                 Column(
@@ -76,7 +77,7 @@ fun BestScoresCard(modifier: Modifier, backgroundColor: Color) {
                         contentDescription = "Bronze Medal",
                         modifier = Modifier.size(48.dp)
                     )
-                    Text(text = "245")
+                    Text(text = bestScores[2].score.toString())
                 }
             }
         }

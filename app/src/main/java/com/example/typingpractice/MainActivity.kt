@@ -10,8 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.typingpractice.ui.theme.TypingPracticeTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.time.ExperimentalTime
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @ExperimentalTime
     @ExperimentalComposeUiApi

@@ -42,6 +42,7 @@ fun MainScreen(
 ) {
     val number = viewModel.score.value
     val extraPoints = viewModel.extraPoints
+    val bestScores = viewModel.bestScores
     val charachterCount = viewModel.charachterCount
     val isGameStarted = viewModel.isGameStarted.value
     val isPaused = viewModel.isPaused.value
@@ -202,7 +203,6 @@ fun MainScreen(
                 value = text,
                 onValueChange = {
                     text = it
-                    Log.d("Mesaj: ", "Text: $text, it: $it")
                     if (text == sentence[charachterCount].toString()) {
                         viewModel.increaseScore(5)
                         if (letterGroup[charachterCount].isTrue != Check.FALSE) {
@@ -247,120 +247,38 @@ fun MainScreen(
                     .fillMaxWidth()
                     .fillMaxHeight(0.30f)
             ) {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    TimeCounter(timeText, backgroundColor = MaterialTheme.colors.onBackground)
-                    Mistakes(mistakeCount = mistakeCount, backgroundColor = MaterialTheme.colors.onBackground)
-/*
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.4f)
-                    ) {
-                        Column() {
-                            Text(
-                                modifier = Modifier.align(CenterHorizontally),
-                                text = "Mistakes"
-                            )
-                            Row(modifier = Modifier.fillMaxWidth(), Arrangement.Center) {
-                                Text(
-                                    modifier = Modifier.padding(end = 8.dp),
-                                    color = if (mistakeCount > 0) Color.Red else Color.White,
-                                    text = "X",
-                                    fontSize = 28.sp,
-                                    style = TextStyle(
-                                        shadow = Shadow(
-                                            color = Color.Black,
-                                            offset = Offset(2F, 2F),
-                                            blurRadius = 2F
-                                        )
-                                    )
-                                )
-                                Text(
-                                    modifier = Modifier.padding(end = 8.dp),
-                                    color = if (mistakeCount > 1) Color.Red else Color.White,
-                                    text = "X",
-                                    fontSize = 28.sp,
-                                    style = TextStyle(
-                                        shadow = Shadow(
-                                            color = Color.Black,
-                                            offset = Offset(2F, 2F),
-                                            blurRadius = 2F
-                                        )
-                                    )
-                                )
-                                Text(
-                                    color = if (mistakeCount > 2) Color.Red else Color.White,
-                                    text = "X",
-                                    fontSize = 28.sp,
-                                    style = TextStyle(
-                                        shadow = Shadow(
-                                            color = Color.Black,
-                                            offset = Offset(2F, 2F),
-                                            blurRadius = 2F
-                                        )
-                                    )
-                                )
-                            }
-                        }
-                    }
-*/
-                    ScoreBoard(number, extraPoints, backgroundColor = MaterialTheme.colors.onBackground)
+                Box(modifier = Modifier.fillMaxSize()) {
+                    TimeCounter(
+                        timeText = timeText,
+                        backgroundColor = MaterialTheme.colors.onBackground,
+                        modifier = Modifier.align(CenterStart).fillMaxWidth(0.3f)
+                    )
+                    Mistakes(
+                        mistakeCount = mistakeCount,
+                        backgroundColor = MaterialTheme.colors.onBackground,
+                        modifier = Modifier.align(Center).fillMaxWidth(0.3f)
+                    )
+                    ScoreBoard(
+                        number = number,
+                        extraPoints = extraPoints,
+                        backgroundColor = MaterialTheme.colors.onBackground,
+                        modifier = Modifier.align(CenterEnd).fillMaxWidth(0.3f)
+                    )
                     ScoreAlertDialog(
                         score = number,
                         dialogState = dialogState
                     ) { viewModel.onDialogDismiss() }
                 }
             }
-            BestScoresCard(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 12.dp),
-                backgroundColor = MaterialTheme.colors.onBackground
-            )
-        }
-    }
-}
-
-/*
-@Composable
-fun TimeCounter(timeText: String) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth(0.4f)
-    ) {
-        Column(
-            modifier = Modifier
-                .align(CenterStart)
-                .padding(start = 12.dp)
-        ) {
-            Text("Time: ")
-            Text(timeText, fontWeight = FontWeight.Bold)
-        }
-    }
-}
-*/
-
-/*
-@Composable
-fun ScoreBoard(number: Int, extraPoints: Int) {
-    Card(
-        shape = RoundedCornerShape(5.dp),
-        elevation = 10.dp
-        ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(1f)
-        ) {
-            Column(
-                modifier = Modifier
-                    .align(CenterEnd)
-                    .padding(end = 12.dp)
-            ) {
-                Text("Score: ")
-                Text("$number", fontWeight = FontWeight.Bold)
-                Text(text = "Gain: ", fontSize = 12.sp)
-                Text(text = "+$extraPoints", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            if(!isGameStarted) {
+                BestScoresCard(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 12.dp),
+                    backgroundColor = MaterialTheme.colors.onBackground,
+                     bestScores = bestScores.value.bestScores
+                )
             }
         }
-
     }
-}*/
+}

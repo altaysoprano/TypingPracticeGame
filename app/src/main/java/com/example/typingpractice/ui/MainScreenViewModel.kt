@@ -1,5 +1,6 @@
 package com.example.typingpractice.ui
 
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.ui.focus.FocusRequester
 import androidx.lifecycle.ViewModel
@@ -19,7 +20,6 @@ import kotlin.time.ExperimentalTime
 class MainScreenViewModel @Inject constructor(
     private val getScores: GetScores,
     private val insertScore: InsertScore,
-    private val deleteAllScores: DeleteAllScores
 ) : ViewModel() {
 
     var extraPoints = 0
@@ -34,8 +34,8 @@ class MainScreenViewModel @Inject constructor(
     private val _sentence: MutableState<String> = mutableStateOf("")
     val sentence = _sentence
 
-    private var _bestScores: MutableState<BestScoresState> = mutableStateOf(BestScoresState())
-    var bestScores = _bestScores
+    private var _allScores: MutableState<BestScoresState> = mutableStateOf(BestScoresState())
+    var allScores = _allScores
 
     private val _letterGroup = mutableStateListOf<Letter>()
     val letterGroup: MutableList<Letter> = _letterGroup
@@ -110,8 +110,12 @@ class MainScreenViewModel @Inject constructor(
 
     private fun getAllScores() {
         viewModelScope.launch {
-            _bestScores.value = _bestScores.value.copy(
-                bestScores = getScores()
+            val allScores = getScores()
+            var totalScore = 0
+            allScores.forEach { totalScore += it.score }
+            _allScores.value = _allScores.value.copy(
+                allScores = allScores,
+                totalScore = totalScore
             )
         }
     }

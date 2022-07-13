@@ -1,25 +1,33 @@
 package com.example.typingpractice.ui
 
+import android.widget.Space
 import com.example.typingpractice.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.typingpractice.data.Score
 
 @Composable
-fun BestScoresCard(modifier: Modifier, backgroundColor: Color, bestScores: List<Score>) {
-
+fun BestScoresCard(
+    modifier: Modifier,
+    backgroundColor: Color,
+    bestScores: List<Score>,
+    totalScore: Int
+) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(5.dp),
@@ -33,7 +41,6 @@ fun BestScoresCard(modifier: Modifier, backgroundColor: Color, bestScores: List<
             Text("Your best scores:", fontSize = 30.sp, fontWeight = Bold)
             Row(
                 modifier = Modifier
-                    .fillMaxSize()
                     .padding(12.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
@@ -49,7 +56,12 @@ fun BestScoresCard(modifier: Modifier, backgroundColor: Color, bestScores: List<
                         contentDescription = "Silver Medal",
                         modifier = Modifier.size(48.dp)
                     )
-                    Text(bestScores[1].score.toString())
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        bestScores[1].score.toString(),
+                        style = MaterialTheme.typography.h1,
+                        fontSize = 16.sp
+                    )
                 }
                 Spacer(modifier = Modifier.width(32.dp))
                 Column(
@@ -63,7 +75,12 @@ fun BestScoresCard(modifier: Modifier, backgroundColor: Color, bestScores: List<
                         contentDescription = "Gold Medal",
                         modifier = Modifier.size(48.dp)
                     )
-                    Text(bestScores[0].score.toString())
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        bestScores[0].score.toString(),
+                        style = MaterialTheme.typography.h1,
+                        fontSize = 16.sp
+                    )
                 }
                 Spacer(modifier = Modifier.width(32.dp))
                 Column(
@@ -77,7 +94,39 @@ fun BestScoresCard(modifier: Modifier, backgroundColor: Color, bestScores: List<
                         contentDescription = "Bronze Medal",
                         modifier = Modifier.size(48.dp)
                     )
-                    Text(text = bestScores[2].score.toString())
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = bestScores[2].score.toString(),
+                        style = MaterialTheme.typography.h1,
+                        fontSize = 16.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+            Card() {
+                Text("Your total score: $totalScore")
+            }
+        }
+        Row(
+            verticalAlignment = Bottom,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(bottom = 12.dp)
+        ) {
+            Card(
+                shape = RoundedCornerShape(5.dp),
+                elevation = 10.dp,
+                backgroundColor = MaterialTheme.colors.secondaryVariant
+            ) {
+                Row(modifier = Modifier.padding(4.dp)) {
+                    Text(
+                        text = "Your total score: ",
+                        fontWeight = Bold
+                    )
+                    Text(
+                        text = "$totalScore",
+                        style = MaterialTheme.typography.h1,
+                        fontSize = 24.sp
+                    )
                 }
             }
         }

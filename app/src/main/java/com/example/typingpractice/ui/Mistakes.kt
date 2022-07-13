@@ -1,11 +1,14 @@
 package com.example.typingpractice.ui
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -28,10 +31,12 @@ fun Mistakes(mistakeCount: Int, backgroundColor: Color, modifier: Modifier) {
         ) {
             Column(modifier = Modifier.align(Alignment.Center)) {
                 Text(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    text = "Mistakes"
+                    modifier = Modifier.align(CenterHorizontally),
+                    text = "Mistakes",
+                    style = MaterialTheme.typography.h1,
+                    fontSize = 16.sp
                 )
-                Row(horizontalArrangement = Arrangement.Center) {
+                Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.align(CenterHorizontally)) {
                     Text(
                         modifier = Modifier.padding(end = 8.dp),
                         color = if (mistakeCount > 0) Color.Red else Color.White,

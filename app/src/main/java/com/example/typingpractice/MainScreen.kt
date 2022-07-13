@@ -2,15 +2,12 @@ package com.example.typingpractice
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -20,16 +17,12 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.typingpractice.ui.*
 import kotlin.time.ExperimentalTime
@@ -42,7 +35,7 @@ fun MainScreen(
 ) {
     val number = viewModel.score.value
     val extraPoints = viewModel.extraPoints
-    val bestScores = viewModel.bestScores
+    val bestScores = viewModel.allScores
     val charachterCount = viewModel.charachterCount
     val isGameStarted = viewModel.isGameStarted.value
     val isPaused = viewModel.isPaused.value
@@ -142,6 +135,10 @@ fun MainScreen(
                             modifier = Modifier.padding(vertical = 8.dp),
                             fontWeight = FontWeight.Bold
                         )
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_pause),
+                            contentDescription = "Resume"
+                        )
                     }
                 } else {
                     Button(
@@ -156,6 +153,10 @@ fun MainScreen(
                             text = "Resume",
                             modifier = Modifier.padding(vertical = 8.dp),
                             fontWeight = FontWeight.Bold
+                        )
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_resume),
+                            contentDescription = "Resume"
                         )
                     }
                 }
@@ -203,6 +204,7 @@ fun MainScreen(
                 value = text,
                 onValueChange = {
                     text = it
+                    Log.d("Mesaj:", text.toString())
                     if (text == sentence[charachterCount].toString()) {
                         viewModel.increaseScore(5)
                         if (letterGroup[charachterCount].isTrue != Check.FALSE) {
@@ -237,7 +239,7 @@ fun MainScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.35f)
+                .fillMaxHeight(0.45f)
                 .padding(12.dp)
                 .align(TopCenter),
             horizontalAlignment = CenterHorizontally,
@@ -251,18 +253,24 @@ fun MainScreen(
                     TimeCounter(
                         timeText = timeText,
                         backgroundColor = MaterialTheme.colors.onBackground,
-                        modifier = Modifier.align(CenterStart).fillMaxWidth(0.3f)
+                        modifier = Modifier
+                            .align(CenterStart)
+                            .fillMaxWidth(0.3f)
                     )
                     Mistakes(
                         mistakeCount = mistakeCount,
                         backgroundColor = MaterialTheme.colors.onBackground,
-                        modifier = Modifier.align(Center).fillMaxWidth(0.3f)
+                        modifier = Modifier
+                            .align(Center)
+                            .fillMaxWidth(0.3f)
                     )
                     ScoreBoard(
                         number = number,
                         extraPoints = extraPoints,
                         backgroundColor = MaterialTheme.colors.onBackground,
-                        modifier = Modifier.align(CenterEnd).fillMaxWidth(0.3f)
+                        modifier = Modifier
+                            .align(CenterEnd)
+                            .fillMaxWidth(0.3f)
                     )
                     ScoreAlertDialog(
                         score = number,
@@ -276,7 +284,8 @@ fun MainScreen(
                         .fillMaxSize()
                         .padding(top = 12.dp),
                     backgroundColor = MaterialTheme.colors.onBackground,
-                     bestScores = bestScores.value.bestScores
+                     bestScores = bestScores.value.allScores,
+                    totalScore = bestScores.value.totalScore
                 )
             }
         }

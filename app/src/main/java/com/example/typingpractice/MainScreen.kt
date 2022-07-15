@@ -205,7 +205,6 @@ fun MainScreen(
                 value = text,
                 onValueChange = {
                     text = it
-                    Log.d("Mesaj: ", "onValueChange çalıştı ")
                     if (text == sentence[charachterCount].toString()) {
                         viewModel.increaseScore(5)
                         if (letterGroup[charachterCount].isTrue != Check.FALSE) {
@@ -221,11 +220,9 @@ fun MainScreen(
                         }
                     } else {
                         if (finishCount < 1) {
-                            Log.d("Mesaj: ", "Else çalıştı")
                             viewModel.decreaseScore(3)
                             letterGroup[charachterCount].isTrue = Check.FALSE
                             if (letterGroup.count { it.isTrue == Check.FALSE } > 3) {
-                                Log.d("Mesaj: ", "if çalıştı")
                                 focusRequester.requestFocus()
                                 kc?.hide()
                                 viewModel.onFinish()

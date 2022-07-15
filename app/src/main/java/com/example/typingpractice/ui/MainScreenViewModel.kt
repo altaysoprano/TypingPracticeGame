@@ -62,7 +62,6 @@ class MainScreenViewModel @Inject constructor(
 
     fun decreaseScore(number: Int) {
         if (_score.value >= number) _score.value -= number else _score.value = 0
-        Log.d("Mesaj: ", "Decrease score çalıştı")
     }
 
     fun onDialogDismiss() {
@@ -122,9 +121,7 @@ class MainScreenViewModel @Inject constructor(
     }
 
     private fun addScores(score: Int) {
-        Log.d("Mesaj:", "addscores: " + score.toString())
         viewModelScope.launch {
-            Log.d("Mesaj: ", "addscores viewModellauncH: " + score.toString())
             insertScore(Score(0, score))
         }
     }
@@ -192,19 +189,11 @@ class MainScreenViewModel @Inject constructor(
 
     fun onFinish() {
         _dialogState.value = true
-        Log.d("Mesaj: ", "alertdialog true")
         resetCharachterCount()
-        Log.d("Mesaj: ", "Score value: ${score.value}")
         addScores(_score.value)
-        for (i in 0..2) {
-            Log.d("Mesaj: ", allScores.value.allScores[i].toString())
-        }
         _isGameStarted.value = false
-        Log.d("Mesaj: " ,"_isGameStarted değişti: ${_isGameStarted.value}")
         _isPaused.value = false
-        Log.d("Mesaj: " ,"_isPaused değişti")
         timerJob?.cancel()
-        Log.d("Mesaj: " ,"timejob cancel")
     }
 
     fun resetCharachterCount() {

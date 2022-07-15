@@ -41,6 +41,7 @@ fun MainScreen(
     val isPaused = viewModel.isPaused.value
     val dialogState = viewModel.dialogState.value
     var text = ""
+    var finishCount = 0
     val timeText = viewModel.timeText.value
     val sentence = viewModel.sentence.value
     val letterGroup = viewModel.letterGroup
@@ -204,7 +205,7 @@ fun MainScreen(
                 value = text,
                 onValueChange = {
                     text = it
-                    Log.d("Mesaj:", text.toString())
+                    Log.d("Mesaj: ", "onValueChange çalıştı ")
                     if (text == sentence[charachterCount].toString()) {
                         viewModel.increaseScore(5)
                         if (letterGroup[charachterCount].isTrue != Check.FALSE) {
@@ -219,12 +220,17 @@ fun MainScreen(
                             viewModel.resetCharachterCount()
                         }
                     } else {
-                        viewModel.decreaseScore(3)
-                        letterGroup[charachterCount].isTrue = Check.FALSE
-                        if (letterGroup.count { it.isTrue == Check.FALSE } > 3) {
-                            focusRequester.requestFocus()
-                            kc?.hide()
-                            viewModel.onFinish()
+                        if (finishCount < 1) {
+                            Log.d("Mesaj: ", "Else çalıştı")
+                            viewModel.decreaseScore(3)
+                            letterGroup[charachterCount].isTrue = Check.FALSE
+                            if (letterGroup.count { it.isTrue == Check.FALSE } > 3) {
+                                Log.d("Mesaj: ", "if çalıştı")
+                                focusRequester.requestFocus()
+                                kc?.hide()
+                                viewModel.onFinish()
+                                finishCount++
+                            }
                         }
                     }
                 },
@@ -278,13 +284,13 @@ fun MainScreen(
                     ) { viewModel.onDialogDismiss() }
                 }
             }
-            if(!isGameStarted) {
+            if (!isGameStarted) {
                 BestScoresCard(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(top = 12.dp),
                     backgroundColor = MaterialTheme.colors.onBackground,
-                     bestScores = bestScores.value.allScores,
+                    bestScores = bestScores.value.allScores,
                     totalScore = bestScores.value.totalScore
                 )
             }

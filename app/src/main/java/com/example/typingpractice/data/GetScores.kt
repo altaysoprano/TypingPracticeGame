@@ -1,7 +1,5 @@
 package com.example.typingpractice.data
 
-import kotlinx.coroutines.flow.Flow
-
 class GetScores(
     private val repository: ScoreRepository
 ) {

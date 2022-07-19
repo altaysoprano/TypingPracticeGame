@@ -36,6 +36,7 @@ fun MainScreen(
     val number = viewModel.score.value
     val extraPoints = viewModel.extraPoints
     val bestScores = viewModel.allScores
+    val letters = viewModel.allLetters
     val charachterCount = viewModel.charachterCount
     val isGameStarted = viewModel.isGameStarted.value
     val isPaused = viewModel.isPaused.value

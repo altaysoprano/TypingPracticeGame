@@ -20,6 +20,8 @@ import kotlin.time.ExperimentalTime
 class MainScreenViewModel @Inject constructor(
     private val getScores: GetScores,
     private val insertScore: InsertScore,
+    private val getLetters: GetLetters,
+    private val insertLetter: InsertLetter
 ) : ViewModel() {
 
     var extraPoints = 0
@@ -37,8 +39,11 @@ class MainScreenViewModel @Inject constructor(
     private var _allScores: MutableState<BestScoresState> = mutableStateOf(BestScoresState())
     var allScores = _allScores
 
-    private val _letterGroup = mutableStateListOf<Letter>()
-    val letterGroup: MutableList<Letter> = _letterGroup
+    private var _allLetters: MutableState<LetterState> = mutableStateOf(LetterState())
+    var allLetters = _allLetters
+
+    private val _letterGroup = mutableStateListOf<CheckLetter>()
+    val letterGroup: MutableList<CheckLetter> = _letterGroup
 
     private val _timeText: MutableState<String> = mutableStateOf("00:00")
     val timeText = _timeText
@@ -54,6 +59,7 @@ class MainScreenViewModel @Inject constructor(
 
     init {
         getAllScores()
+        getAllLetters()
     }
 
     fun increaseScore(number: Int) {
@@ -91,6 +97,24 @@ class MainScreenViewModel @Inject constructor(
         _isGameStarted.value = true
         changeSentence()
         timerJob = viewModelScope.launch { startTimer() }
+    }
+
+    private fun addLetter(letter: String) {
+        viewModelScope.launch {
+            insertLetter(letter)
+        }
+    }
+
+    private fun getAllLetters() {
+        viewModelScope.launch {
+            addLetter("m")
+            addLetter("m")
+            val allLetters = getLetters()
+            allLetters.forEach { Log.d("Mesaj: ", it.toString()) }
+            _allLetters.value = _allLetters.value.copy(
+                allLetters = allLetters
+            )
+        }
     }
 
     @ExperimentalTime
@@ -204,7 +228,7 @@ class MainScreenViewModel @Inject constructor(
         _letterGroup.clear()
         for (i in sentence.value.indices) {
             _letterGroup.add(
-                Letter(
+                CheckLetter(
                     text = sentence.value[i].toString(),
                     isTrue = Check.NOTTRUEORFALSE
                 )

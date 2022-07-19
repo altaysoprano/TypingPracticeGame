@@ -31,8 +31,20 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideLetterRepository(db: ScoreDatabase): LetterRepository {
+        return LetterRepositoryImpl(db.letterDao)
+    }
+
+    @Provides
+    @Singleton
     fun provideGetScores(repository: ScoreRepository): GetScores {
         return GetScores(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetLetters(repository: LetterRepository): GetLetters {
+        return GetLetters(repository)
     }
 
     @Provides
@@ -45,6 +57,12 @@ object AppModule {
     @Singleton
     fun provideInsertScore(repository: ScoreRepository): InsertScore {
         return InsertScore(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideInsertLetter(repository: LetterRepository): InsertLetter {
+        return InsertLetter(repository)
     }
 
     @Provides

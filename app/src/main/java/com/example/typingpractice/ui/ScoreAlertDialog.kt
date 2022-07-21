@@ -34,7 +34,8 @@ fun ScoreAlertDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(text = "Your score: ", fontWeight = FontWeight.Bold, fontSize = 28.sp)
+                    Text(text = "Your score: ", fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp, color = MaterialTheme.colors.onPrimary)
                 }
             },
             text = {
@@ -42,7 +43,7 @@ fun ScoreAlertDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(text = score.toString(), fontSize = 24.sp)
+                    Text(text = score.toString(), fontSize = 24.sp, color = MaterialTheme.colors.onSecondary)
                 }
             },
             confirmButton = {
@@ -54,7 +55,7 @@ fun ScoreAlertDialog(
                         onClick = { onDismiss() },
                         border = BorderStroke(1.dp, color = MaterialTheme.colors.onPrimary)
                     ) {
-                        Text(text = "OK")
+                        Text(text = "OK", color = MaterialTheme.colors.onPrimary)
                     }
                 }
             }

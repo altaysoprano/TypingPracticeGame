@@ -25,10 +25,7 @@ fun Mistakes(mistakeCount: Int, backgroundColor: Color, modifier: Modifier) {
         backgroundColor = backgroundColor,
         modifier = modifier
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-        ) {
+        Box(modifier = Modifier.fillMaxHeight()) {
             Column(modifier = Modifier.align(Alignment.Center)) {
                 Text(
                     modifier = Modifier.align(CenterHorizontally),

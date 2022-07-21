@@ -98,18 +98,18 @@ class MainScreenViewModel @Inject constructor(
         _isGameStarted.value = true
         changeSentence()
         timerJob = viewModelScope.launch { startTimer() }
+        allLetters.value.allLetters.forEach { Log.d("Mesaj: ", it.letter) }
     }
 
-    fun addLetter(letter: String) {
+    fun addLetter(letter: String, number: Int) {
         viewModelScope.launch {
-            insertLetter(letter)
+            insertLetter(letter, number)
         }
     }
 
     private fun getAllLetters() {
         viewModelScope.launch {
             val allLetters = getLetters()
-            allLetters.forEach { Log.d("Mesaj: ", it.letter) }
             _allLetters.value = _allLetters.value.copy(
                 allLetters = allLetters
             )

@@ -12,6 +12,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -37,20 +39,19 @@ fun BestScoresCard(
         backgroundColor = backgroundColor
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Your statistics:", fontSize = 30.sp, fontWeight = Bold)
-            Row(
+            Column(
                 modifier = Modifier
-                    .padding(12.dp),
-                horizontalArrangement = Arrangement.Center
+                    .padding(4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                LettersCard(backgroundColor = backgroundColor, letters = letters)
                 Card(
                     shape = RoundedCornerShape(5.dp),
-                    elevation = 10.dp,
-                    backgroundColor = backgroundColor
+                    backgroundColor = backgroundColor,
+                    modifier = Modifier.padding(horizontal = 24.dp).fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier
@@ -58,10 +59,10 @@ fun BestScoresCard(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            "Your best scores:", fontSize = 24.sp,
-                            fontWeight = Bold, color = MaterialTheme.colors.surface
+                            "Best Scores:", fontSize = 20.sp,
+                            fontWeight = Bold, color = MaterialTheme.colors.onPrimary
                         )
-                        Row {
+                        Row(modifier = Modifier.padding(vertical = 8.dp)) {
                             Column(
                                 modifier = Modifier
                                     .padding(top = 12.dp),
@@ -116,6 +117,7 @@ fun BestScoresCard(
                                 )
                             }
                         }
+                        Spacer(modifier = Modifier.height(16.dp))
                         Row(
                             horizontalArrangement = Arrangement.Center,
                             modifier = Modifier.padding(bottom = 12.dp)
@@ -123,24 +125,32 @@ fun BestScoresCard(
                             Card(
                                 shape = RoundedCornerShape(5.dp),
                                 elevation = 10.dp,
-                                backgroundColor = MaterialTheme.colors.secondaryVariant
+                                backgroundColor = MaterialTheme.colors.onPrimary
                             ) {
-                                Row(modifier = Modifier.padding(4.dp)) {
+                                Column(
+                                    modifier = Modifier.padding(vertical = 4.dp, horizontal = 24.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
                                     Text(
-                                        text = "Your total score: ",
-                                        fontWeight = Bold
+                                        text = "Total Score",
+                                        fontSize = 14.sp,
+                                        fontWeight = Bold,
+                                        color = MaterialTheme.colors.surface
                                     )
+                                    Spacer(modifier = Modifier.height(4.dp))
                                     Text(
                                         text = "$totalScore",
                                         style = MaterialTheme.typography.h1,
-                                        fontSize = 16.sp
+                                        fontSize = 24.sp,
+                                        color = MaterialTheme.colors.secondaryVariant
                                     )
                                 }
                             }
                         }
                     }
-
                 }
+                LettersCard(backgroundColor = backgroundColor, letters = letters)
             }
         }
     }

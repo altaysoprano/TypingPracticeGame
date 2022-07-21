@@ -4,7 +4,7 @@ class InsertLetter(
     private val repository: LetterRepository
 ) {
 
-    suspend operator fun invoke(letter: String) {
-        repository.insertLetter(letter)
+    suspend operator fun invoke(letter: String, number: Int) {
+        repository.insertLetter(letter, number)
     }
 }

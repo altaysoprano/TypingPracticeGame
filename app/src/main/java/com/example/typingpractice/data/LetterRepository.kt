@@ -4,5 +4,5 @@ interface LetterRepository {
 
     suspend fun getLetters(): List<Letter>
 
-    suspend fun insertLetter(letter: String)
+    suspend fun insertLetter(letter: String, number: Int)
 }

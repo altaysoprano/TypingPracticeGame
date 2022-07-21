@@ -22,10 +22,7 @@ fun ScoreBoard(number: Int, extraPoints: Int, backgroundColor: Color, modifier: 
         backgroundColor = backgroundColor,
         modifier = modifier
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-        ) {
+        Box(modifier = Modifier.fillMaxHeight()) {
             Column(
                 modifier = Modifier
                     .align(Alignment.Center)

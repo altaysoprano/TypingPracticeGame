@@ -7,7 +7,7 @@ class LetterRepositoryImpl(
         return dao.getLetters()
     }
 
-    override suspend fun insertLetter(letter: String) {
-        dao.insertLetter(letter)
+    override suspend fun insertLetter(letter: String, number: Int) {
+        dao.insertLetter(letter, number)
     }
 }

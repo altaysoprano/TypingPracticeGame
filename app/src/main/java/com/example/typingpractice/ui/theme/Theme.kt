@@ -23,11 +23,11 @@ private val LightColorPalette = lightColors(
     primary = Color.LightGray,
     background = white900,
     onBackground = white50,
-    surface = white600,
+    surface = white200,
     onSurface = white50,
     secondary = white700,
     onSecondary = white850,
-    onPrimary = white100,
+    onPrimary = white800,
     secondaryVariant = white400
 )
 

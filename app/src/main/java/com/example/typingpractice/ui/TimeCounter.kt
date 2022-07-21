@@ -21,8 +21,7 @@ fun TimeCounter(timeText: String, backgroundColor: Color, modifier: Modifier) {
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxHeight(),
+            modifier = Modifier.fillMaxHeight(),
             contentAlignment = Alignment.CenterStart
         ) {
             Column(

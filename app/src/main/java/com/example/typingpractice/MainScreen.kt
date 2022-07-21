@@ -76,7 +76,7 @@ fun MainScreen(
                         viewModel.onStart()
                     },
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth().padding(vertical = 12.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0XFF0FC00F),
                         contentColor = Color.White
@@ -149,8 +149,8 @@ fun MainScreen(
                             kc?.show()
                             viewModel.onResume()
                         },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
+                        modifier = Modifier.fillMaxWidth(),
+                        ) {
                         Text(
                             text = "Resume",
                             modifier = Modifier.padding(vertical = 8.dp),
@@ -224,6 +224,7 @@ fun MainScreen(
                             viewModel.decreaseScore(3)
                             letterGroup[charachterCount].isTrue = Check.FALSE
                             if (letterGroup.count { it.isTrue == Check.FALSE } > 3) {
+                                letterGroup.forEach { if(it.isTrue == Check.FALSE) viewModel.addLetter(it.text) }
                                 focusRequester.requestFocus()
                                 kc?.hide()
                                 viewModel.onFinish()
@@ -235,9 +236,6 @@ fun MainScreen(
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
                 ),
-                keyboardActions = KeyboardActions(
-                    onDone = { }
-                )
             )
         }
         Column(
@@ -289,7 +287,8 @@ fun MainScreen(
                         .padding(top = 12.dp),
                     backgroundColor = MaterialTheme.colors.onBackground,
                     bestScores = bestScores.value.allScores,
-                    totalScore = bestScores.value.totalScore
+                    totalScore = bestScores.value.totalScore,
+                    letters = letters.value.allLetters
                 )
             }
         }

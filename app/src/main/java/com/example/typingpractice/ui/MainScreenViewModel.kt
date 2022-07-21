@@ -75,6 +75,7 @@ class MainScreenViewModel @Inject constructor(
         _score.value = 0
         extraPoints = 0
         getAllScores()
+        getAllLetters()
         resetTime()
         _letterGroup.clear()
     }
@@ -99,7 +100,7 @@ class MainScreenViewModel @Inject constructor(
         timerJob = viewModelScope.launch { startTimer() }
     }
 
-    private fun addLetter(letter: String) {
+    fun addLetter(letter: String) {
         viewModelScope.launch {
             insertLetter(letter)
         }
@@ -107,10 +108,8 @@ class MainScreenViewModel @Inject constructor(
 
     private fun getAllLetters() {
         viewModelScope.launch {
-            addLetter("m")
-            addLetter("m")
             val allLetters = getLetters()
-            allLetters.forEach { Log.d("Mesaj: ", it.toString()) }
+            allLetters.forEach { Log.d("Mesaj: ", it.letter) }
             _allLetters.value = _allLetters.value.copy(
                 allLetters = allLetters
             )

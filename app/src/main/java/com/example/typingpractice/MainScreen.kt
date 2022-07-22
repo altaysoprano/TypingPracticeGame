@@ -102,6 +102,7 @@ fun MainScreen(
                     )
                     ScoreAlertDialog(
                         score = number,
+                        letters = letterGroup.filter { it.isTrue == Check.FALSE && it.text != " " },
                         dialogState = dialogState
                     ) { viewModel.onDialogDismiss() }
                 }

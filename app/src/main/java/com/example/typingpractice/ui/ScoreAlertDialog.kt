@@ -2,10 +2,7 @@ package com.example.typingpractice.ui
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -22,6 +19,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ScoreAlertDialog(
     score: Int,
+    letters: List<CheckLetter>,
     dialogState: Boolean,
     onDismiss: () -> Unit
 ) {
@@ -34,16 +32,31 @@ fun ScoreAlertDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(text = "Your score: ", fontWeight = FontWeight.Bold,
-                        fontSize = 28.sp, color = MaterialTheme.colors.onPrimary)
+                    Text(
+                        text = "Your score: ", fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp, color = MaterialTheme.colors.onPrimary
+                    )
                 }
             },
             text = {
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = score.toString(), fontSize = 24.sp, color = MaterialTheme.colors.onSecondary)
+                    Text(
+                        text = score.toString(),
+                        fontSize = 24.sp,
+                        color = MaterialTheme.colors.onSecondary
+                    )
+                    Row() {
+                        letters.forEach {
+                            Text(
+                                text = it.text,
+                                fontSize = 24.sp,
+                                color = MaterialTheme.colors.onSecondary
+                            )
+                        }
+                    }
                 }
             },
             confirmButton = {

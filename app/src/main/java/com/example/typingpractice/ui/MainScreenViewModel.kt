@@ -42,6 +42,9 @@ class MainScreenViewModel @Inject constructor(
     private var _allLetters: MutableState<LetterState> = mutableStateOf(LetterState())
     var allLetters = _allLetters
 
+    private val _allMistakenLetters = mutableStateListOf<CheckLetter>()
+    val allMistakenLetters = _allMistakenLetters
+
     private val _letterGroup = mutableStateListOf<CheckLetter>()
     val letterGroup: MutableList<CheckLetter> = _letterGroup
 
@@ -77,6 +80,7 @@ class MainScreenViewModel @Inject constructor(
         getAllScores()
         getAllLetters()
         resetTime()
+        resetAllWrongLetters()
         _letterGroup.clear()
     }
 
@@ -98,7 +102,7 @@ class MainScreenViewModel @Inject constructor(
         _isGameStarted.value = true
         changeSentence()
         timerJob = viewModelScope.launch { startTimer() }
-        allLetters.value.allLetters.forEach { Log.d("Mesaj: ", it.letter) }
+        allLetters.value.allLetters.forEach { Log.d("Mesaj: ", "${it.letter}: ${it.letterScore}") }
     }
 
     fun addLetter(letter: String, number: Int) {
@@ -206,11 +210,13 @@ class MainScreenViewModel @Inject constructor(
             }
         }
         increaseScore(extraPoints)
+        addAllWrongLetters()
         changeSentenceToLetterGroup()
         resetTime()
     }
 
     fun onFinish() {
+        addAllWrongLetters()
         _dialogState.value = true
         resetCharachterCount()
         addScores(_score.value)
@@ -233,6 +239,24 @@ class MainScreenViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    private fun addAllWrongLetters() {
+        letterGroup.forEach {
+            if (it.isTrue == Check.FALSE && it.text != " ") {
+                if(it !in _allMistakenLetters) {
+                    _allMistakenLetters.add(it)
+                }
+                addLetter(it.text, 1)
+            }
+            if(it.isTrue == Check.TRUE && it.text != " ") {
+                addLetter(it.text, -1)
+            }
+        }
+    }
+
+    private fun resetAllWrongLetters() {
+        _allMistakenLetters.clear()
     }
 
     private fun randomString(): String {

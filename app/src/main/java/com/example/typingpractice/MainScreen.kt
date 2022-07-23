@@ -46,6 +46,7 @@ fun MainScreen(
     val dialogState = viewModel.dialogState.value
     var text = ""
     var finishCount = 0
+    val allMistakenLetters = viewModel.allMistakenLetters
     val timeText = viewModel.timeText.value
     val sentence = viewModel.sentence.value
     val letterGroup = viewModel.letterGroup
@@ -102,7 +103,7 @@ fun MainScreen(
                     )
                     ScoreAlertDialog(
                         score = number,
-                        letters = letterGroup.filter { it.isTrue == Check.FALSE && it.text != " " },
+                        letters = allMistakenLetters,
                         dialogState = dialogState
                     ) { viewModel.onDialogDismiss() }
                 }
@@ -285,14 +286,7 @@ fun MainScreen(
                                     viewModel.decreaseScore(3)
                                     letterGroup[charachterCount].isTrue = Check.FALSE
                                     if (letterGroup.count { it.isTrue == Check.FALSE } > 3) {
-                                        letterGroup.forEach {
-                                            if (it.isTrue == Check.FALSE && it.text != " ") {
-                                                viewModel.addLetter(it.text, 1)
-                                            }
-                                            if(it.isTrue == Check.TRUE && it.text != " ") {
-                                                viewModel.addLetter(it.text, -1)
-                                            }
-                                        }
+                                        allMistakenLetters.forEach { Log.d("Mesaj: ", it.text) }
                                         focusRequester.requestFocus()
                                         kc?.hide()
                                         viewModel.onFinish()

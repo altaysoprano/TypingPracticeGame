@@ -30,7 +30,8 @@ fun BestScoresCard(
     backgroundColor: Color,
     letters: List<Letter>,
     bestScores: List<Score>,
-    totalScore: Int
+    totalScore: Int,
+    totalTime: String
 ) {
     Card(
         modifier = modifier,
@@ -51,7 +52,9 @@ fun BestScoresCard(
                 Card(
                     shape = RoundedCornerShape(5.dp),
                     backgroundColor = backgroundColor,
-                    modifier = Modifier.padding(horizontal = 24.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
+                        .fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier
@@ -118,39 +121,83 @@ fun BestScoresCard(
                             }
                         }
                         Spacer(modifier = Modifier.height(16.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            modifier = Modifier.padding(bottom = 12.dp)
+                        Card(
+                            modifier = Modifier.padding(bottom = 12.dp),
+                            shape = RoundedCornerShape(5.dp),
+                            elevation = 10.dp,
+                            backgroundColor = MaterialTheme.colors.onPrimary
                         ) {
-                            Card(
-                                shape = RoundedCornerShape(5.dp),
-                                elevation = 10.dp,
-                                backgroundColor = MaterialTheme.colors.onPrimary
+                            Column(
+                                modifier = Modifier.padding(vertical = 4.dp, horizontal = 24.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
                             ) {
-                                Column(
-                                    modifier = Modifier.padding(vertical = 4.dp, horizontal = 24.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Text(
-                                        text = "Total Score",
-                                        fontSize = 14.sp,
-                                        fontWeight = Bold,
-                                        color = MaterialTheme.colors.surface
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text = "$totalScore",
-                                        style = MaterialTheme.typography.h1,
-                                        fontSize = 24.sp,
-                                        color = MaterialTheme.colors.secondaryVariant
-                                    )
-                                }
+                                Text(
+                                    text = "Total Score",
+                                    fontSize = 14.sp,
+                                    fontWeight = Bold,
+                                    color = MaterialTheme.colors.surface
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = "$totalScore",
+                                    style = MaterialTheme.typography.h1,
+                                    fontSize = 24.sp,
+                                    color = MaterialTheme.colors.secondaryVariant
+                                )
                             }
                         }
                     }
                 }
                 LettersCard(backgroundColor = backgroundColor, letters = letters)
+                Card(
+                    shape = RoundedCornerShape(5.dp),
+                    backgroundColor = backgroundColor,
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
+                        .fillMaxWidth()
+                ) {
+                    Row(
+                        verticalAlignment = CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 10.dp)
+                    ) {
+                        Card(
+                            shape = RoundedCornerShape(5.dp),
+                            elevation = 4.dp,
+                            backgroundColor = MaterialTheme.colors.onPrimary
+                        ) {
+                            Row(
+                                verticalAlignment = CenterVertically,
+                                horizontalArrangement = Arrangement.Center,
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_time),
+                                    contentDescription = "Total Practice Time",
+                                    modifier = Modifier.size(24.dp)
+                                )
+                                Spacer(modifier = Modifier.width(2.dp))
+                                Text(
+                                    text = "Total Practice Time:",
+                                    fontSize = 14.sp,
+                                    fontWeight = Bold,
+                                    color = MaterialTheme.colors.surface,
+                                    textAlign = TextAlign.Center
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(
+                                    text = totalTime,
+                                    fontWeight = Bold,
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colors.secondaryVariant,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(2.dp))
             }
         }
     }

@@ -40,6 +40,7 @@ fun MainScreen(
     val extraPoints = viewModel.extraPoints
     val bestScores = viewModel.allScores
     val letters = viewModel.allLetters
+    val totalTime = viewModel.totalTimeText
     val charachterCount = viewModel.charachterCount
     val isGameStarted = viewModel.isGameStarted.value
     val isPaused = viewModel.isPaused.value
@@ -120,7 +121,8 @@ fun MainScreen(
                         backgroundColor = MaterialTheme.colors.onBackground,
                         bestScores = bestScores.value.allScores,
                         totalScore = bestScores.value.totalScore,
-                        letters = letters.value.allLetters
+                        letters = letters.value.allLetters,
+                        totalTime = totalTime.value
                     )
                 }
                 Column(

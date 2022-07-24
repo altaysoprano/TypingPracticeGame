@@ -21,12 +21,15 @@ class MainScreenViewModel @Inject constructor(
     private val getScores: GetScores,
     private val insertScore: InsertScore,
     private val getLetters: GetLetters,
-    private val insertLetter: InsertLetter
+    private val insertLetter: InsertLetter,
+    private val getTotalTime: GetTotalTime,
+    private val insertTime: InsertTime
 ) : ViewModel() {
 
     var extraPoints = 0
     var charachterCount = 0
     private var time = 0
+    private var totalTime = 0
     val focusRequester = FocusRequester()
     private var timerJob: Job? = null
 
@@ -51,6 +54,9 @@ class MainScreenViewModel @Inject constructor(
     private val _timeText: MutableState<String> = mutableStateOf("00:00")
     val timeText = _timeText
 
+    private val _totalTimeText: MutableState<String> = mutableStateOf("00:00")
+    val totalTimeText = _totalTimeText
+
     private val _isGameStarted: MutableState<Boolean> = mutableStateOf(false)
     val isGameStarted = _isGameStarted
 
@@ -63,6 +69,8 @@ class MainScreenViewModel @Inject constructor(
     init {
         getAllScores()
         getAllLetters()
+        setTotalTime()
+        Log.d("Mesaj: ", "initte total time: " + _totalTimeText.value)
     }
 
     fun increaseScore(number: Int) {
@@ -79,6 +87,8 @@ class MainScreenViewModel @Inject constructor(
         extraPoints = 0
         getAllScores()
         getAllLetters()
+        setTotalTime()
+        Log.d("Mesaj: ", "dismissten sonra total time: " + _totalTimeText.value)
         resetTime()
         resetAllWrongLetters()
         _letterGroup.clear()
@@ -120,12 +130,18 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
+    private fun setTotalTime() {
+        viewModelScope.launch {
+            val totalTime = getTotalTime()
+            _totalTimeText.value = stringForTime(totalTime)
+        }
+    }
+
     @ExperimentalTime
     suspend fun startTimer() {
         while (true) {
             delay(100.milliseconds)
             increaseTime(100)
-            // Log.d("Mesaj: ", "Time: $time")
             _timeText.value = stringForTime(time)
         }
     }
@@ -150,6 +166,12 @@ class MainScreenViewModel @Inject constructor(
     private fun addScores(score: Int) {
         viewModelScope.launch {
             insertScore(Score(0, score))
+        }
+    }
+
+    private fun insertTime(time: Int) {
+        viewModelScope.launch {
+            insertTime(Time(0, time))
         }
     }
 
@@ -211,8 +233,18 @@ class MainScreenViewModel @Inject constructor(
         }
         increaseScore(extraPoints)
         addAllWrongLetters()
+        addToTotalTime(time)
+        Log.d("Mesaj: ", totalTime.toString())
         changeSentenceToLetterGroup()
         resetTime()
+    }
+
+    private fun addToTotalTime(time: Int) {
+        totalTime += time
+    }
+
+    private fun resetTotalTime() {
+        totalTime = 0
     }
 
     fun onFinish() {
@@ -220,6 +252,10 @@ class MainScreenViewModel @Inject constructor(
         _dialogState.value = true
         resetCharachterCount()
         addScores(_score.value)
+        addToTotalTime(time)
+        insertTime(totalTime)
+        Log.d("Mesaj: ", totalTime.toString())
+        resetTotalTime()
         _isGameStarted.value = false
         _isPaused.value = false
         timerJob?.cancel()

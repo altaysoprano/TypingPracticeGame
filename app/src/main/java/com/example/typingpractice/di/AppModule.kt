@@ -37,6 +37,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideTimeRepository(db: ScoreDatabase): TimeRepository {
+        return TimeRepositoryImpl(db.timeDao)
+    }
+
+    @Provides
+    @Singleton
     fun provideGetScores(repository: ScoreRepository): GetScores {
         return GetScores(repository)
     }
@@ -45,6 +51,12 @@ object AppModule {
     @Singleton
     fun provideGetLetters(repository: LetterRepository): GetLetters {
         return GetLetters(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetTotalTime(repository: TimeRepository) : GetTotalTime {
+        return GetTotalTime(repository)
     }
 
     @Provides
@@ -63,6 +75,12 @@ object AppModule {
     @Singleton
     fun provideInsertLetter(repository: LetterRepository): InsertLetter {
         return InsertLetter(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideInsertTime(repository: TimeRepository): InsertTime {
+        return InsertTime(repository)
     }
 
     @Provides

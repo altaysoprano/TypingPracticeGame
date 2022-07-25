@@ -39,6 +39,9 @@ class MainScreenViewModel @Inject constructor(
     private val _sentence: MutableState<String> = mutableStateOf("")
     val sentence = _sentence
 
+    private val _text: MutableState<String> = mutableStateOf("")
+    val text = _text
+
     private var _allScores: MutableState<BestScoresState> = mutableStateOf(BestScoresState())
     var allScores = _allScores
 
@@ -100,6 +103,10 @@ class MainScreenViewModel @Inject constructor(
 
     private fun increaseTime(number: Int) {
         time += number
+    }
+
+    fun onTextChanged(text: String) {
+        _text.value = text
     }
 
     private fun resetTime() {

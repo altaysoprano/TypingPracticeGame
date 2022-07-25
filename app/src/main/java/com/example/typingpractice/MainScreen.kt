@@ -46,6 +46,7 @@ fun MainScreen(
     val isPaused = viewModel.isPaused.value
     val dialogState = viewModel.dialogState.value
     var text = ""
+    val text1 = viewModel.text.value
     var finishCount = 0
     val allMistakenLetters = viewModel.allMistakenLetters
     val timeText = viewModel.timeText.value
@@ -267,10 +268,10 @@ fun MainScreen(
                             .alpha(0f)
                             .fillMaxSize(0f)
                             .focusRequester(focusRequester),
-                        value = text,
+                        value = text1,
                         onValueChange = {
-                            text = it
-                            if (text == sentence[charachterCount].toString()) {
+                            viewModel.onTextChanged(it)
+                            if (it[it.length-1].toString() == sentence[charachterCount].toString()) {
                                 viewModel.increaseScore(5)
                                 if (letterGroup[charachterCount].isTrue != Check.FALSE) {
                                     letterGroup[charachterCount].isTrue = Check.TRUE

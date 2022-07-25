@@ -28,7 +28,7 @@ fun TimeCounter(timeText: String, backgroundColor: Color, modifier: Modifier) {
                 modifier = Modifier
                     .align(Alignment.Center)
             ) {
-                Text("Time: ")
+                Text("Time")
                 Text(timeText, fontWeight = FontWeight.Bold)
             }
         }

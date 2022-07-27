@@ -38,6 +38,7 @@ fun MainScreen(
 ) {
     val number = viewModel.score.value
     val extraPoints = viewModel.extraPoints
+    val gainedTime = viewModel.gainedTime
     val bestScores = viewModel.allScores
     val letters = viewModel.allLetters
     val totalTime = viewModel.totalTimeText
@@ -45,7 +46,7 @@ fun MainScreen(
     val isGameStarted = viewModel.isGameStarted.value
     val isPaused = viewModel.isPaused.value
     val dialogState = viewModel.dialogState.value
-    var text = ""
+    var remainingTimeText = viewModel.remainingTimeText.value
     val text1 = viewModel.text.value
     var finishCount = 0
     val allMistakenLetters = viewModel.allMistakenLetters
@@ -82,11 +83,12 @@ fun MainScreen(
             ) {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     TimeCounter(
-                        timeText = timeText,
+                        timeText = remainingTimeText,
                         backgroundColor = MaterialTheme.colors.onBackground,
                         modifier = Modifier
                             .align(CenterStart)
-                            .fillMaxWidth(0.3f)
+                            .fillMaxWidth(0.3f),
+                        gainedTime = gainedTime
                     )
                     Mistakes(
                         mistakeCount = mistakeCount,

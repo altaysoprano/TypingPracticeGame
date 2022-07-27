@@ -28,10 +28,14 @@ class MainScreenViewModel @Inject constructor(
 
     var extraPoints = 0
     var charachterCount = 0
+    var gainedTime = 0
+    private var changeSentenceCount = 0
     private var time = 0
+    private var remainingTime = 60000
     private var totalTime = 0
     val focusRequester = FocusRequester()
     private var timerJob: Job? = null
+    private var remainingTimerJob: Job? = null
 
     private val _score: MutableState<Int> = mutableStateOf(0)
     val score = _score
@@ -57,6 +61,9 @@ class MainScreenViewModel @Inject constructor(
     private val _timeText: MutableState<String> = mutableStateOf("00:00")
     val timeText = _timeText
 
+    private var _remainingTimeText: MutableState<String> = mutableStateOf("01:00")
+    val remainingTimeText = _remainingTimeText
+
     private val _totalTimeText: MutableState<String> = mutableStateOf("00:00")
     val totalTimeText = _totalTimeText
 
@@ -73,7 +80,6 @@ class MainScreenViewModel @Inject constructor(
         getAllScores()
         getAllLetters()
         setTotalTime()
-        Log.d("Mesaj: ", "initte total time: " + _totalTimeText.value)
     }
 
     fun increaseScore(number: Int) {
@@ -88,11 +94,12 @@ class MainScreenViewModel @Inject constructor(
         _dialogState.value = false
         _score.value = 0
         extraPoints = 0
+        gainedTime = 0
         getAllScores()
         getAllLetters()
         setTotalTime()
-        Log.d("Mesaj: ", "dismissten sonra total time: " + _totalTimeText.value)
         resetTime()
+        resetRemainingTime()
         resetAllWrongLetters()
         _letterGroup.clear()
     }
@@ -105,6 +112,14 @@ class MainScreenViewModel @Inject constructor(
         time += number
     }
 
+    private fun decreaseRemainingTime(number: Int) {
+        remainingTime -= number
+    }
+
+    private fun increaseRemainingTime(number: Int) {
+        remainingTime += number
+    }
+
     fun onTextChanged(text: String) {
         _text.value = text
     }
@@ -114,11 +129,17 @@ class MainScreenViewModel @Inject constructor(
         _timeText.value = "00:00"
     }
 
+    private fun resetRemainingTime() {
+        remainingTime = 60000
+        _remainingTimeText.value = "01:00"
+    }
+
     @ExperimentalTime
     fun onStart() {
         _isGameStarted.value = true
         changeSentence()
-        timerJob = viewModelScope.launch { startTimer() }
+        timerJob = viewModelScope.launch { startTimer() }  //BURAYA BAK 1
+        remainingTimerJob = viewModelScope.launch { startRemainingTimer() }
         allLetters.value.allLetters.forEach { Log.d("Mesaj: ", "${it.letter}: ${it.letterScore}") }
     }
 
@@ -145,7 +166,7 @@ class MainScreenViewModel @Inject constructor(
     }
 
     @ExperimentalTime
-    suspend fun startTimer() {
+    suspend fun startTimer() {  //BURADAN BAKARAK YAP
         while (true) {
             delay(100.milliseconds)
             increaseTime(100)
@@ -153,9 +174,20 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
+    @ExperimentalTime
+    suspend fun startRemainingTimer() {
+        while(remainingTime >= 0) {
+            delay(100.milliseconds)
+            decreaseRemainingTime(100)
+            _remainingTimeText.value = stringForTime(remainingTime)
+        }
+        onFinish()
+    }
+
     fun onPaused() {
         _isPaused.value = true
         timerJob?.cancel()
+        remainingTimerJob?.cancel()
     }
 
     private fun getAllScores() {
@@ -186,7 +218,9 @@ class MainScreenViewModel @Inject constructor(
     fun onResume() {
         _isPaused.value = false
         timerJob?.cancel()
+        remainingTimerJob?.cancel()
         timerJob = viewModelScope.launch { startTimer() }
+        remainingTimerJob = viewModelScope.launch { startRemainingTimer() }
     }
 
     private fun stringForTime(timeMs: Int): String {
@@ -241,9 +275,17 @@ class MainScreenViewModel @Inject constructor(
         increaseScore(extraPoints)
         addAllWrongLetters()
         addToTotalTime(time)
-        Log.d("Mesaj: ", totalTime.toString())
         changeSentenceToLetterGroup()
+        gainedTime = if(_score.value == 0) 0 else remainingTime / 10
         resetTime()
+        if(remainingTime < 12000) remainingTime = 12000
+/*
+        resetRemainingTime()
+        if((remainingTime-changeSentenceCount*5000) >= 10000) {decreaseRemainingTime(changeSentenceCount*5000)}
+        else { remainingTime = 10000}
+*/
+        increaseRemainingTime(gainedTime)
+        increaseChangeSentenceCount(1)
     }
 
     private fun addToTotalTime(time: Int) {
@@ -258,18 +300,27 @@ class MainScreenViewModel @Inject constructor(
         addAllWrongLetters()
         _dialogState.value = true
         resetCharachterCount()
+        resetChangeSentenceCount()
         addScores(_score.value)
         addToTotalTime(time)
         insertTime(totalTime)
-        Log.d("Mesaj: ", totalTime.toString())
         resetTotalTime()
         _isGameStarted.value = false
         _isPaused.value = false
         timerJob?.cancel()
+        remainingTimerJob?.cancel()
     }
 
     fun resetCharachterCount() {
         charachterCount = 0
+    }
+
+    private fun increaseChangeSentenceCount(number: Int) {
+        changeSentenceCount += number
+    }
+
+    private fun resetChangeSentenceCount() {
+        changeSentenceCount = 0
     }
 
     private fun changeSentenceToLetterGroup() {

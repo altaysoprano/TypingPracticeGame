@@ -31,7 +31,8 @@ fun Mistakes(mistakeCount: Int, backgroundColor: Color, modifier: Modifier) {
                     modifier = Modifier.align(CenterHorizontally),
                     text = "Mistakes",
                     style = MaterialTheme.typography.h1,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    color= MaterialTheme.colors.onSecondary
                 )
                 Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.align(CenterHorizontally)) {
                     Text(

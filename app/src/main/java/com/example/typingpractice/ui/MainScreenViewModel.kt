@@ -5,11 +5,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.focus.FocusRequester
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.typingpractice.Check
 import com.example.typingpractice.data.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.security.SecureRandom
 import javax.inject.Inject
@@ -36,6 +39,9 @@ class MainScreenViewModel @Inject constructor(
     val focusRequester = FocusRequester()
     private var timerJob: Job? = null
     private var remainingTimerJob: Job? = null
+
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading = _isLoading.asStateFlow()
 
     private val _score: MutableState<Int> = mutableStateOf(0)
     val score = _score
@@ -77,6 +83,10 @@ class MainScreenViewModel @Inject constructor(
     val dialogState = _dialogState
 
     init {
+        viewModelScope.launch {
+            delay(3000)
+            _isLoading.value = false
+        }
         getAllScores()
         getAllLetters()
         setTotalTime()

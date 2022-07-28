@@ -41,7 +41,7 @@ fun LettersCard(
             Row {
                 Card(
                     elevation = 10.dp,
-                    backgroundColor = backgroundColor,
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
                     modifier = Modifier
                         .clip(CircleShape)
                         .padding(4.dp)
@@ -57,7 +57,7 @@ fun LettersCard(
                 }
                 Card(
                     elevation = 10.dp,
-                    backgroundColor = backgroundColor,
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
                     modifier = Modifier
                         .clip(CircleShape)
                         .padding(4.dp)
@@ -73,7 +73,7 @@ fun LettersCard(
                 }
                 Card(
                     elevation = 10.dp,
-                    backgroundColor = backgroundColor,
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
                     modifier = Modifier
                         .clip(CircleShape)
                         .padding(4.dp)

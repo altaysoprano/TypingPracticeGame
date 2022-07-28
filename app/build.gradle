@@ -95,4 +95,7 @@ dependencies {
     
     //Splash Screen
     implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+
+    //Status Bar Color
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
 }

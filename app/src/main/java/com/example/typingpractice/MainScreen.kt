@@ -162,7 +162,7 @@ fun MainScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(MaterialTheme.colors.onSecondary)
+                                .background(MaterialTheme.colors.error)
                                 .padding(12.dp),
                             horizontalArrangement = Arrangement.Center
                         ) {
@@ -302,7 +302,7 @@ fun MainScreen(
                         },
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Done
-                        ),
+                        )
                     )
                 }
             }

@@ -42,7 +42,7 @@ fun BestScoresCard(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Your statistics:", fontSize = 30.sp, fontWeight = Bold)
+            Text("Your statistics:", fontSize = 30.sp, fontWeight = Bold, color= MaterialTheme.colors.onSecondary)
             Column(
                 modifier = Modifier
                     .padding(4.dp),
@@ -80,7 +80,8 @@ fun BestScoresCard(
                                 Text(
                                     bestScores[1].score.toString(),
                                     style = MaterialTheme.typography.h1,
-                                    fontSize = 16.sp
+                                    fontSize = 16.sp,
+                                    color= MaterialTheme.colors.onSecondary
                                 )
                             }
                             Spacer(modifier = Modifier.width(32.dp))
@@ -98,7 +99,8 @@ fun BestScoresCard(
                                 Text(
                                     bestScores[0].score.toString(),
                                     style = MaterialTheme.typography.h1,
-                                    fontSize = 16.sp
+                                    fontSize = 16.sp,
+                                    color= MaterialTheme.colors.onSecondary
                                 )
                             }
                             Spacer(modifier = Modifier.width(32.dp))
@@ -116,7 +118,8 @@ fun BestScoresCard(
                                 Text(
                                     text = bestScores[2].score.toString(),
                                     style = MaterialTheme.typography.h1,
-                                    fontSize = 16.sp
+                                    fontSize = 16.sp,
+                                    color= MaterialTheme.colors.onSecondary
                                 )
                             }
                         }

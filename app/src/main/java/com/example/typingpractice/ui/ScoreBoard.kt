@@ -3,6 +3,7 @@ package com.example.typingpractice.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,12 +28,24 @@ fun ScoreBoard(number: Int, extraPoints: Int, backgroundColor: Color, modifier: 
                 modifier = Modifier
                     .align(Alignment.Center)
             ) {
-                Text("Score ")
-                Text("$number", fontWeight = FontWeight.Bold, modifier = Modifier.align(CenterHorizontally))
-                Text(text = "Gain ", fontSize = 12.sp, modifier = Modifier.align(CenterHorizontally))
-                Text(text = "+$extraPoints", fontSize = 12.sp,
+                Text("Score ", color = MaterialTheme.colors.onSecondary)
+                Text(
+                    "$number",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(CenterHorizontally),
+                    color = MaterialTheme.colors.onSecondary
+                )
+                Text(
+                    text = "Gain ",
+                    fontSize = 12.sp,
+                    modifier = Modifier.align(CenterHorizontally),
+                    color = MaterialTheme.colors.onSecondary
+                )
+                Text(
+                    text = "+$extraPoints", fontSize = 12.sp,
                     fontWeight = FontWeight.Bold, modifier = Modifier.align(CenterHorizontally),
-                    color = Color(0XFF0FC00F))
+                    color = Color(0XFF0FC00F)
+                )
             }
         }
 

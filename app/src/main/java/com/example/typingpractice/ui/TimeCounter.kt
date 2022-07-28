@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,12 +32,15 @@ fun TimeCounter(timeText: String, backgroundColor: Color, modifier: Modifier, ga
                 modifier = Modifier
                     .align(Alignment.Center)
             ) {
-                Text("Time", modifier = Modifier.align(Alignment.CenterHorizontally))
-                Text(timeText, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterHorizontally))
+                Text("Time", modifier = Modifier.align(Alignment.CenterHorizontally),
+                    color= MaterialTheme.colors.onSecondary)
+                Text(timeText, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterHorizontally),
+                    color= MaterialTheme.colors.onSecondary)
                 Text(
                     "Gain",
                     fontSize = 12.sp,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    color= MaterialTheme.colors.onSecondary
                 )
                 Text(
                     "+$gainedTimeText", fontSize = 12.sp,
